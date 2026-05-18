@@ -1,8 +1,7 @@
-package gr.york.mobiledev2026.database;
+package gr.york.mobiledev2026.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room3.Room;
@@ -11,6 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import gr.york.mobiledev2026.database.Db;
 import gr.york.mobiledev2026.databinding.ActivityDatabaseBinding;
 
 public class DatabaseActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database;
+package gr.york.mobiledev2026.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -7,12 +7,11 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import gr.york.mobiledev2026.database.DatabaseActivity;
-import gr.york.mobiledev2026.database.StorageActivity;
+import gr.york.mobiledev2026.ui.DatabaseActivity;
+import gr.york.mobiledev2026.ui.StorageActivity;
 import gr.york.mobiledev2026.databinding.ActivityMainBinding;
 import gr.york.mobiledev2026.fragment.MyFragmentActivity;
 import gr.york.mobiledev2026.network.NetworkActivity;
