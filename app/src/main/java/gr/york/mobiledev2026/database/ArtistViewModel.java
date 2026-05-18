@@ -40,16 +40,12 @@ public class ArtistViewModel extends AndroidViewModel {
         return repository.getImagePathByName(name);
     }
 
+    public LiveData<String> getImagePathLiveDataByName(String name) {
+        return repository.getImagePathLiveDataByName(name);
+    }
+
     public LiveData<Bitmap> loadArtistImage(String name) {
-        String imagePath = repository.getImagePathByName(name);
-        MutableLiveData<Bitmap> imageLiveData = new MutableLiveData<>();
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            imageLiveData.postValue(bitmap);
-        } else {
-            imageLiveData.postValue(null);
-        }
-        return imageLiveData;
+        return repository.loadImageByName(name);
     }
 
     public void insert(ArtistEntity artist) {
