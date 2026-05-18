@@ -34,6 +34,9 @@ public interface ArtistDao {
     @Query("SELECT * FROM ArtistEntity WHERE name = :query")
     LiveData<ArtistEntity> findByName(String query);
 
+    @Query("SELECT * FROM ArtistEntity WHERE name = :query")
+    ArtistEntity findByNameSync(String query);
+
     @Query("SELECT ArtistEntity.* FROM ArtistEntity " +
             "JOIN ArtistFts ON ArtistEntity.rowid = ArtistFts.rowid " +
             "WHERE ArtistFts MATCH :query")

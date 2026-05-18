@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ArtistRepository {
+    private static final String TAG = ArtistRepository.class.getSimpleName();
     private final ArtistDao artistDao;
     private final ExecutorService executorService;
 
@@ -24,6 +25,22 @@ public class ArtistRepository {
         Db db = Db.getDatabase(application);
         artistDao = db.artistDao();
         executorService = Executors.newSingleThreadExecutor();
+    }
+
+    private static void requireNonEmpty(String value, String fieldName) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        }
+    }
+
+    private void runAsync(String operation, Runnable task) {
+        executorService.execute(() -> {
+            try {
+                task.run();
+            } catch (Exception e) {
+                Log.e(TAG, operation + " failed", e);
+            }
+        });
     }
 
     public LiveData<List<ArtistEntity>> getAllArtists() {
@@ -38,30 +55,22 @@ public class ArtistRepository {
     }
 
     public LiveData<List<ArtistEntity>> searchArtistsByName(String query) {
-        if (query == null || query.trim().isEmpty()) {
-            throw new IllegalArgumentException("Search query cannot be null or empty");
-        }
+        requireNonEmpty(query, "Search Query");
         return artistDao.searchByName(query);
     }
 
     public LiveData<ArtistEntity> findArtistByName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
+        requireNonEmpty(name, "Artist Name");
         return artistDao.findByName(name);
     }
 
     public String getImagePathByName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
+        requireNonEmpty(name, "Artist Name");
         return artistDao.getImagePathByName(name);
     }
 
     public LiveData<Bitmap> loadImageByName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
+        requireNonEmpty(name, "Artist Name");
 
         MutableLiveData<Bitmap> image = new MutableLiveData<>();
         executorService.execute(() -> {
@@ -78,9 +87,7 @@ public class ArtistRepository {
     }
 
     public String saveImage(Context context, String name, Bitmap image) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
+        requireNonEmpty(name, "Artist Name");
         if (image == null) {
             throw new IllegalArgumentException("Image cannot be null");
         }
@@ -92,13 +99,13 @@ public class ArtistRepository {
         try (FileOutputStream stream = new FileOutputStream(file)) {
             image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         } catch (IOException e) {
-            Log.e("ArtistRepository", "Failed to save image for " + name, e);
+            Log.e(TAG, "Failed to save image for " + name, e);
             return null;
         }
 
         String path = file.getAbsolutePath();
         executorService.execute(() -> {
-            ArtistEntity artist = artistDao.findByName(name).getValue();
+            ArtistEntity artist = artistDao.findByNameSync(name);
             if (artist != null) {
                 artist.setImagePath(path);
                 artistDao.update(artist);
@@ -109,42 +116,18 @@ public class ArtistRepository {
     }
 
     public void insert(ArtistEntity artist) {
-            executorService.execute(() -> {
-                try {
-                    artistDao.insert(artist);
-                } catch (Exception e) {
-                    Log.e("ArtistRepository", "Failed to insert artist: " + artist.getName(), e);
-                }
-            });
+        runAsync("insert " + artist.getName(), () -> artistDao.insert(artist));
     }
 
     public void update(ArtistEntity artist) {
-        executorService.execute(() -> {
-            try {
-                artistDao.update(artist);
-            } catch (Exception e) {
-                Log.e("ArtistRepository", "Failed to update artist: " + artist.getName(), e);
-            }
-        });
+        runAsync("update " + artist.getName(), () -> artistDao.update(artist));
     }
 
     public void save(ArtistEntity artist) {
-            executorService.execute(() -> {
-                try {
-                    artistDao.save(artist);
-                } catch (Exception e) {
-                    Log.e("ArtistRepository", "Failed to save artist: " + artist.getName(), e);
-                }
-            });
+        runAsync("save " + artist.getName(), () -> artistDao.save(artist));
     }
 
     public void delete(ArtistEntity artist) {
-        executorService.execute(() -> {
-            try {
-                artistDao.delete(artist);
-            } catch (Exception e) {
-                Log.e("ArtistRepository", "Failed to delete artist: " + artist.getName(), e);
-            }
-        });
+        runAsync("delete " + artist.getName(), () -> artistDao.delete(artist));
     }
 }
