@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database;
+package gr.york.mobiledev2026.database.artist;
 
 import androidx.lifecycle.LiveData;
 import androidx.room3.Dao;

@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database;
+package gr.york.mobiledev2026.database.artist;
 
 import androidx.annotation.NonNull;
 import androidx.room3.Entity;

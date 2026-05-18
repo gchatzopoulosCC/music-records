@@ -8,6 +8,10 @@ import androidx.room3.AutoMigration;
 import androidx.room3.Database;
 import androidx.room3.RoomDatabase;
 
+import gr.york.mobiledev2026.database.artist.ArtistDao;
+import gr.york.mobiledev2026.database.artist.ArtistEntity;
+import gr.york.mobiledev2026.database.artist.ArtistFts;
+
 @Database(
         entities = {
                 ArtistEntity.class,

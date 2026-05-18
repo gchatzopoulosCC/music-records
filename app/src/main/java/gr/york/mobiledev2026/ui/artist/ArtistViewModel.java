@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.ui;
+package gr.york.mobiledev2026.ui.artist;
 
 import android.app.Application;
 import android.graphics.Bitmap;
@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import gr.york.mobiledev2026.database.ArtistEntity;
-import gr.york.mobiledev2026.database.ArtistRepository;
+import gr.york.mobiledev2026.database.artist.ArtistEntity;
+import gr.york.mobiledev2026.database.artist.ArtistRepository;
 
 public class ArtistViewModel extends AndroidViewModel {
     private final ArtistRepository repository;

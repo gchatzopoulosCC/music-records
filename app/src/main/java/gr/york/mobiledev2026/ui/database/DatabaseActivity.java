@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.ui;
+package gr.york.mobiledev2026.ui.database;
 
 import android.content.Intent;
 import android.os.Bundle;
