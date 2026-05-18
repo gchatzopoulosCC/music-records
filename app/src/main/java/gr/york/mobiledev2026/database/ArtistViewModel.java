@@ -11,8 +11,8 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 public class ArtistViewModel extends AndroidViewModel {
-    private ArtistRepository repository;
-    private LiveData<List<ArtistEntity>> allArtists;
+    private final ArtistRepository repository;
+    private final LiveData<List<ArtistEntity>> allArtists;
 
     public ArtistViewModel(Application application) {
         super(application);
