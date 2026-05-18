@@ -44,4 +44,7 @@ public interface ArtistDao {
 
     @Query("SELECT image_path FROM ArtistEntity WHERE name = :name")
     String getImagePathByName(String name);
+
+    @Query("SELECT image_path FROM ArtistEntity WHERE name = :name")
+    LiveData<String> getImagePathLiveDataByName(String name);
 }
