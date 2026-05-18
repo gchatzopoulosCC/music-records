@@ -16,7 +16,6 @@ import gr.york.mobiledev2026.databinding.ActivityMainBinding;
 import gr.york.mobiledev2026.fragment.MyFragmentActivity;
 import gr.york.mobiledev2026.network.NetworkActivity;
 import gr.york.mobiledev2026.recycler.RecyclerActivity;
-import gr.york.mobiledev2026.sample.SampleActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,14 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name", "John Doe");
                 intent.putExtra("number", 100);
                 startActivityForResult(intent, 1000);
-            }
-        });
-
-        binding.mainBtnSample2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SampleActivity.class);
-                startActivity(intent);
             }
         });
 
