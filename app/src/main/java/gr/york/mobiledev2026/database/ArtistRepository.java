@@ -109,18 +109,42 @@ public class ArtistRepository {
     }
 
     public void insert(ArtistEntity artist) {
-        executorService.execute(() -> artistDao.insert(artist));
+            executorService.execute(() -> {
+                try {
+                    artistDao.insert(artist);
+                } catch (Exception e) {
+                    Log.e("ArtistRepository", "Failed to insert artist: " + artist.getName(), e);
+                }
+            });
     }
 
     public void update(ArtistEntity artist) {
-        executorService.execute(() -> artistDao.update(artist));
+        executorService.execute(() -> {
+            try {
+                artistDao.update(artist);
+            } catch (Exception e) {
+                Log.e("ArtistRepository", "Failed to update artist: " + artist.getName(), e);
+            }
+        });
     }
 
     public void save(ArtistEntity artist) {
-        executorService.execute(() -> artistDao.save(artist));
+            executorService.execute(() -> {
+                try {
+                    artistDao.save(artist);
+                } catch (Exception e) {
+                    Log.e("ArtistRepository", "Failed to save artist: " + artist.getName(), e);
+                }
+            });
     }
 
     public void delete(ArtistEntity artist) {
-        executorService.execute(() -> artistDao.delete(artist));
+        executorService.execute(() -> {
+            try {
+                artistDao.delete(artist);
+            } catch (Exception e) {
+                Log.e("ArtistRepository", "Failed to delete artist: " + artist.getName(), e);
+            }
+        });
     }
 }
