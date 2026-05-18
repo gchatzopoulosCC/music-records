@@ -3,7 +3,6 @@ package gr.york.mobiledev2026.database;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -16,12 +15,16 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.bumptech.glide.Glide;
+
 public class ArtistRepository {
     private static final String TAG = ArtistRepository.class.getSimpleName();
     private final ArtistDao artistDao;
     private final ExecutorService executorService;
+    private final Application application;
 
     public ArtistRepository(Application application) {
+        this.application = application;
         Db db = Db.getDatabase(application);
         artistDao = db.artistDao();
         executorService = Executors.newSingleThreadExecutor();
@@ -69,6 +72,11 @@ public class ArtistRepository {
         return artistDao.getImagePathByName(name);
     }
 
+    public LiveData<String> getImagePathLiveDataByName(String name) {
+        requireNonEmpty(name, "Artist Name");
+        return artistDao.getImagePathLiveDataByName(name);
+    }
+
     public LiveData<Bitmap> loadImageByName(String name) {
         requireNonEmpty(name, "Artist Name");
 
@@ -76,8 +84,17 @@ public class ArtistRepository {
         executorService.execute(() -> {
             String path = artistDao.getImagePathByName(name);
             if (path != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                image.postValue(bitmap);
+                try {
+                    Bitmap bitmap = Glide.with(application)
+                            .asBitmap()
+                            .load(path)
+                            .submit()
+                            .get();
+                    image.postValue(bitmap);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to load image", e);
+                    image.postValue(null);
+                }
             } else {
                 image.postValue(null);
             }
