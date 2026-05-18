@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room3.Room;
+import androidx.room.Room;
 
 import java.util.Objects;
 import java.util.concurrent.Executor;

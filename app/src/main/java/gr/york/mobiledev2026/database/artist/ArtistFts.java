@@ -1,11 +1,11 @@
 package gr.york.mobiledev2026.database.artist;
 
 import androidx.annotation.NonNull;
-import androidx.room3.Entity;
-import androidx.room3.Fts5;
+import androidx.room.Entity;
+import androidx.room.Fts4;
 
 @Entity
-@Fts5(contentEntity = ArtistEntity.class)
+@Fts4(contentEntity = ArtistEntity.class)
 public class ArtistFts {
     @NonNull
     public String name;

@@ -1,8 +1,8 @@
 package gr.york.mobiledev2026.database.artist;
 
 import androidx.annotation.NonNull;
-import androidx.room3.ColumnInfo;
-import androidx.room3.Entity;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 
 @Entity(primaryKeys = {"name"})
 public class ArtistEntity {
