@@ -1,12 +1,12 @@
 package gr.york.mobiledev2026.database;
 
-import static androidx.room3.Room.databaseBuilder;
+import static androidx.room.Room.databaseBuilder;
 
 import android.content.Context;
 
-import androidx.room3.AutoMigration;
-import androidx.room3.Database;
-import androidx.room3.RoomDatabase;
+import androidx.room.AutoMigration;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import gr.york.mobiledev2026.database.artist.ArtistDao;
 import gr.york.mobiledev2026.database.artist.ArtistEntity;
@@ -17,10 +17,7 @@ import gr.york.mobiledev2026.database.artist.ArtistFts;
                 ArtistEntity.class,
                 ArtistFts.class
         },
-        version = 2,
-        autoMigrations = {
-            @AutoMigration(from = 1, to = 2)
-        }
+        version = 1
 )
 public abstract class Db extends RoomDatabase {
     public static volatile Db INSTANCE;
