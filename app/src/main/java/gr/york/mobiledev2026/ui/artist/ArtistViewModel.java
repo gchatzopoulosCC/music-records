@@ -52,4 +52,16 @@ public class ArtistViewModel extends AndroidViewModel {
     public void insert(ArtistEntity artist) {
         repository.insert(artist);
     }
+
+    public void update(ArtistEntity artist) {
+        repository.update(artist);
+    }
+
+    public void save(ArtistEntity artist) {
+        repository.save(artist);
+    }
+
+    public void delete(ArtistEntity artist) {
+        repository.delete(artist);
+    }
 }
