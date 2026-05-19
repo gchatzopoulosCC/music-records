@@ -1,8 +1,11 @@
 package gr.york.mobiledev2026.data.model;
 
+import java.util.Date;
+
 public class Album {
     private String artist;
     private String album;
+    private Date releaseDate;
 
     public Album() {}
 
