@@ -12,26 +12,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.bumptech.glide.Glide;
 
 import gr.york.mobiledev2026.data.local.AppDatabase;
+import gr.york.mobiledev2026.data.local.AppExecutors;
 import gr.york.mobiledev2026.data.local.ArtistDao;
 import gr.york.mobiledev2026.data.local.ArtistEntity;
 
 public class ArtistRepository {
     private static final String TAG = ArtistRepository.class.getSimpleName();
     private final ArtistDao artistDao;
-    private final ExecutorService executorService;
+    private final AppExecutors executors;
     private final Application application;
 
     public ArtistRepository(Application application) {
         this.application = application;
         AppDatabase appDatabase = AppDatabase.getDatabase(application);
         artistDao = appDatabase.artistDao();
-        executorService = Executors.newSingleThreadExecutor();
+        executors = AppExecutors.getInstance();
     }
 
     private static void requireNonEmpty(String value, String fieldName) {
@@ -41,7 +40,7 @@ public class ArtistRepository {
     }
 
     private void runAsync(String operation, Runnable task) {
-        executorService.execute(() -> {
+        executors.diskIO().execute(() -> {
             try {
                 task.run();
             } catch (Exception e) {
@@ -85,7 +84,7 @@ public class ArtistRepository {
         requireNonEmpty(name, "Artist Name");
 
         MutableLiveData<Bitmap> image = new MutableLiveData<>();
-        executorService.execute(() -> {
+        executors.networkIO().execute(() -> {
             String path = artistDao.getImagePathByName(name);
             if (path != null) {
                 try {
@@ -125,7 +124,7 @@ public class ArtistRepository {
         }
 
         String path = file.getAbsolutePath();
-        executorService.execute(() -> {
+        executors.diskIO().execute(() -> {
             ArtistEntity artist = artistDao.findByNameSync(name);
             if (artist != null) {
                 artist.setImagePath(path);
