@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database.artist;
+package gr.york.mobiledev2026.data.local.artist;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

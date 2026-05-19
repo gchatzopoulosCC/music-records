@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database.artist;
+package gr.york.mobiledev2026.data.local;
 
 import android.app.Application;
 import android.content.Context;
@@ -17,8 +17,6 @@ import java.util.concurrent.Executors;
 
 import com.bumptech.glide.Glide;
 
-import gr.york.mobiledev2026.database.Db;
-
 public class ArtistRepository {
     private static final String TAG = ArtistRepository.class.getSimpleName();
     private final ArtistDao artistDao;
@@ -27,8 +25,8 @@ public class ArtistRepository {
 
     public ArtistRepository(Application application) {
         this.application = application;
-        Db db = Db.getDatabase(application);
-        artistDao = db.artistDao();
+        AppDatabase appDatabase = AppDatabase.getDatabase(application);
+        artistDao = appDatabase.artistDao();
         executorService = Executors.newSingleThreadExecutor();
     }
 

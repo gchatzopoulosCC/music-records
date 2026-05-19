@@ -1,16 +1,11 @@
-package gr.york.mobiledev2026.database;
+package gr.york.mobiledev2026.data.local;
 
 import static androidx.room.Room.databaseBuilder;
 
 import android.content.Context;
 
-import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-
-import gr.york.mobiledev2026.database.artist.ArtistDao;
-import gr.york.mobiledev2026.database.artist.ArtistEntity;
-import gr.york.mobiledev2026.database.artist.ArtistFts;
 
 @Database(
         entities = {
