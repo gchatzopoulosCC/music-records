@@ -84,7 +84,7 @@ public class ArtistRepository {
         requireNonEmpty(name, "Artist Name");
 
         MutableLiveData<Bitmap> image = new MutableLiveData<>();
-        executors.networkIO().execute(() -> {
+        executors.diskIO().execute(() -> {
             String path = artistDao.getImagePathByName(name);
             if (path != null) {
                 try {
