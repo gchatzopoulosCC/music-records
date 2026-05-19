@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/artistCard"
+        android:id="@+id/trackCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryContainer"
@@ -16,12 +16,24 @@
         android:padding="12dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/artist_img"
+            android:id="@+id/track_img"
             android:layout_width="match_parent"
             android:layout_height="152dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent" />
+
+        <TextView
+            android:id="@+id/track_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.MyApp.TitleLarge"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            tools:text="Track Name" />
 
         <TextView
             android:id="@+id/artist_text"
@@ -31,8 +43,8 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?attr/colorOnPrimaryContainer"
+            android:textAppearance="@style/TextAppearance.MyApp.BodyLarge"
+            android:textColor="?attr/colorPrimary"
             tools:text="Artist Name" />
 
     </LinearLayout>

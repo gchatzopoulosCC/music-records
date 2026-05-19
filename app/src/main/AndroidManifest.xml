@@ -14,6 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
         <activity
+            android:name=".TracksActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicApp" />
+        <activity
+            android:name=".CollectionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MusicApp" />
+        <activity
+            android:name=".BrowseActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MusicApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".fragment.MyFragmentActivity"
             android:exported="false" />
         <activity
@@ -28,24 +45,6 @@
         <activity
             android:name=".ui.database.DatabaseActivity"
             android:exported="false" />
-        <activity
-            android:name=".MusicApplicationMainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

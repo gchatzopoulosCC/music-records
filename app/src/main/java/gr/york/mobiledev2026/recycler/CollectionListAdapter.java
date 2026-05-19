@@ -3,6 +3,7 @@ package gr.york.mobiledev2026.recycler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,28 +13,31 @@ import java.util.List;
 
 import gr.york.mobiledev2026.R;
 import gr.york.mobiledev2026.database.artist.ArtistEntity;
+import gr.york.mobiledev2026.database.collection.CollectionItem;
+import gr.york.mobiledev2026.ui.artist.ArtistViewModel;
 
-public class ArtistsListAdapter extends RecyclerView.Adapter<ArtistsListAdapter.MyViewHolder> {
+
+
+public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAdapter.MyViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(ArtistEntity artist);
+        void onItemClick(ArtistEntity item);
     }
     private List<ArtistEntity> dataList;
-    private OnItemClickListener listener;
-    public ArtistsListAdapter(List<ArtistEntity> dataList) {
+    private ArtistViewModel viewModel;
+
+    private static OnItemClickListener listener;
+    public CollectionListAdapter(List<ArtistEntity> dataList, OnItemClickListener l) {
         this.dataList = dataList;
-    }
-    public ArtistsListAdapter(List<ArtistEntity> dataList, OnItemClickListener listener) {
-        this.dataList = dataList;
-        this.listener = listener;
+        this.listener = l;
     }
 
     // Called when RecyclerView needs a new ViewHolder
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.artist_card, parent, false);
-        return new MyViewHolder(view, listener);
+                .inflate(R.layout.collection_item, parent, false);
+        return new MyViewHolder(view);
     }
     // Called to display data at specified position
     @Override
@@ -52,26 +56,26 @@ public class ArtistsListAdapter extends RecyclerView.Adapter<ArtistsListAdapter.
         notifyDataSetChanged();
     }
     // ViewHolder class (usually inner class)
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView image;
-        OnItemClickListener listener;
-        MyViewHolder(View itemView, OnItemClickListener l) {
+        ImageButton button;
+        MyViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.artist_text);
-            image = itemView.findViewById(R.id.artist_img);
-            this.listener = l;
+            title = itemView.findViewById(R.id.textView);
+            image = itemView.findViewById(R.id.imageView);
+            button = itemView.findViewById(R.id.removeButton);
         }
         void bind(ArtistEntity item) {
             title.setText(item.getName());
 //            TODO: image for artists
 //            image.setImageBitmap(item.getImagePath());
-
-            if (listener != null) {
-                itemView.setOnClickListener(v -> {
-                    listener.onItemClick(item);
-                });
-            }
+            button.setOnClickListener(v -> {
+                List<ArtistEntity> newDataList = dataList;
+                listener.onItemClick(item);
+                newDataList.remove(item);
+                updateData(newDataList);
+            });
         }
     }
 }

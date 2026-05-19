@@ -45,8 +45,12 @@ android {
 
 
 dependencies {
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.navigation.fragment
+    implementation libs.androidx.navigation.ui
     implementation libs.androidx.room.common.jvm
     implementation libs.appcompat
+    implementation libs.cardview.v7
     implementation libs.coordinatorlayout
     implementation libs.material
     implementation libs.activity

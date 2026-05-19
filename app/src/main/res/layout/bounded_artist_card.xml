@@ -16,7 +16,7 @@
         android:padding="12dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/artist_img"
+            android:id="@+id/track_img"
             android:layout_width="match_parent"
             android:layout_height="152dp"
             android:scaleType="centerCrop"
@@ -24,7 +24,7 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent" />
 
         <TextView
-            android:id="@+id/artist_text"
+            android:id="@+id/track_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
