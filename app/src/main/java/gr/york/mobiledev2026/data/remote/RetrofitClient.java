@@ -24,6 +24,7 @@ public class RetrofitClient {
                 .addInterceptor(logging)
                 .connectTimeout(30, SECONDS)
                 .readTimeout(30, SECONDS)
+                .writeTimeout(30, SECONDS)
                 .build();
 
             retrofit = new Retrofit.Builder()
