@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 
@@ -29,6 +30,7 @@ public class RetrofitClient {
                 .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(MoshiConverterFactory.create(new Moshi.Builder().build()))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
         }
         return retrofit;
