@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.database.artist;
+package gr.york.mobiledev2026.local.artist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +21,9 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import gr.york.mobiledev2026.LiveDataTestUtil;
-import gr.york.mobiledev2026.database.Db;
+import gr.york.mobiledev2026.data.local.AppDatabase;
+import gr.york.mobiledev2026.data.local.ArtistDao;
+import gr.york.mobiledev2026.data.local.ArtistEntity;
 
 @RunWith(AndroidJUnit4.class)
 public class ArtistDaoTest {
@@ -29,22 +31,22 @@ public class ArtistDaoTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private Db db;
+    private AppDatabase appDatabase;
     private ArtistDao artistDao;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, Db.class)
+        appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        artistDao = db.artistDao();
+        artistDao = appDatabase.artistDao();
     }
 
     @After
     public void closeDb() {
-        if (db != null) {
-            db.close();
+        if (appDatabase != null) {
+            appDatabase.close();
         }
     }
 
