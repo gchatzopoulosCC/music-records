@@ -17,7 +17,7 @@
             android:name=".fragment.MyFragmentActivity"
             android:exported="false" />
         <activity
-            android:name=".database.StorageActivity"
+            android:name=".ui.storage.StorageActivity"
             android:exported="false" />
         <activity
             android:name=".recycler.RecyclerActivity"
@@ -29,8 +29,8 @@
             android:name=".network.NetworkActivity"
             android:exported="false" />
         <activity
-            android:name=".database.DatabaseActivity"
-            android:exported="false" />-->
+            android:name=".ui.database.DatabaseActivity"
+            android:exported="false" />
         <activity
             android:name=".MusicApplicationMainActivity"
             android:exported="true">
@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity
+        <--<activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
