@@ -9,8 +9,8 @@ import androidx.room.RoomDatabase;
 
 @Database(
         entities = {
-                ArtistEntity.class,
-                ArtistFts.class
+                CollectionEntity.class,
+                CollectionFts.class
         },
         version = 1
 )
@@ -31,6 +31,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract ArtistDao artistDao();
+    public abstract CollectionDao artistDao();
 
 }

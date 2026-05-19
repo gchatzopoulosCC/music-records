@@ -22,17 +22,17 @@ import java.util.List;
 
 import gr.york.mobiledev2026.LiveDataTestUtil;
 import gr.york.mobiledev2026.data.local.AppDatabase;
-import gr.york.mobiledev2026.data.local.ArtistDao;
-import gr.york.mobiledev2026.data.local.ArtistEntity;
+import gr.york.mobiledev2026.data.local.CollectionDao;
+import gr.york.mobiledev2026.data.local.CollectionEntity;
 
 @RunWith(AndroidJUnit4.class)
-public class ArtistDaoTest {
+public class CollectionDaoTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private AppDatabase appDatabase;
-    private ArtistDao artistDao;
+    private CollectionDao collectionDao;
 
     @Before
     public void createDb() {
@@ -40,7 +40,7 @@ public class ArtistDaoTest {
         appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        artistDao = appDatabase.artistDao();
+        collectionDao = appDatabase.artistDao();
     }
 
     @After
@@ -52,11 +52,11 @@ public class ArtistDaoTest {
 
     @Test
     public void insertAndFindByNameSync() {
-        ArtistEntity artist = new ArtistEntity("Test Artist");
+        CollectionEntity artist = new CollectionEntity("Test Artist");
         artist.setImagePath("path/to/image");
-        artistDao.insert(artist);
+        collectionDao.insert(artist);
 
-        ArtistEntity loaded = artistDao.findByNameSync("Test Artist");
+        CollectionEntity loaded = collectionDao.findByNameSync("Test Artist");
         assertNotNull(loaded);
         assertEquals("Test Artist", loaded.getName());
         assertEquals("path/to/image", loaded.getImagePath());
@@ -64,35 +64,35 @@ public class ArtistDaoTest {
 
     @Test
     public void updateArtist() {
-        ArtistEntity artist = new ArtistEntity("Update Me");
-        artistDao.insert(artist);
+        CollectionEntity artist = new CollectionEntity("Update Me");
+        collectionDao.insert(artist);
 
-        ArtistEntity loaded = artistDao.findByNameSync("Update Me");
+        CollectionEntity loaded = collectionDao.findByNameSync("Update Me");
         loaded.setImagePath("new/path");
-        artistDao.update(loaded);
+        collectionDao.update(loaded);
 
-        ArtistEntity updated = artistDao.findByNameSync("Update Me");
+        CollectionEntity updated = collectionDao.findByNameSync("Update Me");
         assertEquals("new/path", updated.getImagePath());
     }
 
     @Test
     public void deleteArtist() {
-        ArtistEntity artist = new ArtistEntity("Delete Me");
-        artistDao.insert(artist);
+        CollectionEntity artist = new CollectionEntity("Delete Me");
+        collectionDao.insert(artist);
 
-        ArtistEntity loaded = artistDao.findByNameSync("Delete Me");
-        artistDao.delete(loaded);
+        CollectionEntity loaded = collectionDao.findByNameSync("Delete Me");
+        collectionDao.delete(loaded);
 
-        ArtistEntity afterDelete = artistDao.findByNameSync("Delete Me");
+        CollectionEntity afterDelete = collectionDao.findByNameSync("Delete Me");
         assertNull(afterDelete);
     }
 
     @Test
     public void readAllArtistsLiveData() throws Exception {
-        artistDao.insert(new ArtistEntity("Artist 1"));
-        artistDao.insert(new ArtistEntity("Artist 2"));
+        collectionDao.insert(new CollectionEntity("Artist 1"));
+        collectionDao.insert(new CollectionEntity("Artist 2"));
 
-        List<ArtistEntity> allArtists = LiveDataTestUtil.getOrAwaitValue(artistDao.readAll());
+        List<CollectionEntity> allArtists = LiveDataTestUtil.getOrAwaitValue(collectionDao.readAll());
         assertNotNull(allArtists);
         assertEquals(2, allArtists.size());
     }
