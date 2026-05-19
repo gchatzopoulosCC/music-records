@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
-<!--        <activity
+        <activity
             android:name=".fragment.MyFragmentActivity"
             android:exported="false" />
         <activity
@@ -21,9 +21,6 @@
             android:exported="false" />
         <activity
             android:name=".recycler.RecyclerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".sample.SampleActivity"
             android:exported="false" />
         <activity
             android:name=".network.NetworkActivity"
@@ -40,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <--<activity
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -48,7 +45,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
     </application>
 
 </manifest>
