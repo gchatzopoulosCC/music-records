@@ -8,8 +8,7 @@ public class Album {
     private Artist artist;
     private Date releaseDate;
     private String coverImageUrl;
-    private int listeners;
-    private int playcount;
+    private Stats stats;
     private Tag tag;
     private List<Track> tracks;
 
@@ -50,20 +49,12 @@ public class Album {
         this.coverImageUrl = coverImageUrl;
     }
 
-    public int getListeners() {
-        return listeners;
+    public Stats getStats() {
+        return stats;
     }
 
-    public void setListeners(int listeners) {
-        this.listeners = listeners;
-    }
-
-    public int getPlaycount() {
-        return playcount;
-    }
-
-    public void setPlaycount(int playcount) {
-        this.playcount = playcount;
+    public void setStats(Stats stats) {
+        this.stats = stats;
     }
 
     public Tag getTag() {
