@@ -2,12 +2,12 @@ package gr.york.mobiledev2026.data.model;
 
 import java.util.Date;
 
-public class Biography {
+public class Description {
     private Date published;
     private String summary;
     private String content;
 
-    public Biography(Date published, String summary, String content) {
+    public Description(Date published, String summary, String content) {
         this.published = published;
         this.summary = summary;
         this.content = content;
