@@ -121,10 +121,10 @@ Temporary Items
 
 ### Windows ###
 # Windows thumbnail cache files
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
+Thumbs.appDatabase
+Thumbs.appDatabase:encryptable
+ehthumbs.appDatabase
+ehthumbs_vista.appDatabase
 
 # Dump file
 *.stackdump
