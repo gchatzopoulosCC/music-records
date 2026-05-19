@@ -1,7 +1,11 @@
 package gr.york.mobiledev2026.data.remote;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import com.squareup.moshi.Moshi;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -12,8 +16,18 @@ public class RetrofitClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .connectTimeout(30, SECONDS)
+                .readTimeout(30, SECONDS)
+                .build();
+
             retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(client)
                 .addConverterFactory(MoshiConverterFactory.create(new Moshi.Builder().build()))
                 .build();
         }
