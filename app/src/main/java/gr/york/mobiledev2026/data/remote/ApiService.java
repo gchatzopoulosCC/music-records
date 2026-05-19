@@ -6,35 +6,35 @@ import gr.york.mobiledev2026.data.model.Album;
 import gr.york.mobiledev2026.data.model.Artist;
 import gr.york.mobiledev2026.data.model.Chart;
 import gr.york.mobiledev2026.data.model.Track;
-import retrofit2.Call;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface ApiService {
     @GET("album")
-    Call<ApiResponse<List<Album>>> getAlbums();
+    Observable<ApiResponse<List<Album>>> getAlbums();
 
     @GET("album/{artist}")
-    Call<ApiResponse<List<Album>>> getAlbumsByArtist(@Path("artist") String artistName);
+    Observable<ApiResponse<List<Album>>> getAlbumsByArtist(@Path("artist") String artistName);
 
     @GET("album/{artist}/{name}")
-    Call<ApiResponse<Album>> getAlbumByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
+    Observable<ApiResponse<Album>> getAlbumByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
 
     @GET("artist")
-    Call<ApiResponse<List<Artist>>> getArtists();
+    Observable<ApiResponse<List<Artist>>> getArtists();
 
     @GET("artist/{name}")
-    Call<ApiResponse<Artist>> getArtistByName(@Path("name") String name);
+    Observable<ApiResponse<Artist>> getArtistByName(@Path("name") String name);
 
     @GET("chart")
-    Call<ApiResponse<Chart>> getChart();
+    Observable<ApiResponse<Chart>> getChart();
 
     @GET("track")
-    Call<ApiResponse<List<Track>>> getTracks();
+    Observable<ApiResponse<List<Track>>> getTracks();
 
     @GET("track/{artist}")
-    Call<ApiResponse<List<Track>>> getTracksByArtist(@Path("artist") String artistName);
+    Observable<ApiResponse<List<Track>>> getTracksByArtist(@Path("artist") String artistName);
 
     @GET("track/{artist}/{name}")
-    Call<ApiResponse<Track>> getTrackByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
+    Observable<ApiResponse<Track>> getTrackByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
 }
