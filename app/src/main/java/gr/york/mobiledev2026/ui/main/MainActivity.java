@@ -10,11 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import gr.york.mobiledev2026.ui.storage.StorageActivity;
 import gr.york.mobiledev2026.databinding.ActivityMainBinding;
-import gr.york.mobiledev2026.fragment.MyFragmentActivity;
-import gr.york.mobiledev2026.network.NetworkActivity;
-import gr.york.mobiledev2026.recycler.RecyclerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,49 +28,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "Button clicked!");
 
                 Snackbar.make(view, "Button clicked!", Snackbar.LENGTH_LONG).show();
-            }
-        });
-
-        binding.mainBtnNetwork.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NetworkActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        binding.mainBtnDatabase.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DatabaseActivity.class);
-                intent.putExtra("name", "John Doe");
-                intent.putExtra("number", 100);
-                startActivityForResult(intent, 1000);
-            }
-        });
-
-        binding.mainBtnRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RecyclerActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        binding.mainBtnPreferences.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, StorageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        binding.mainBtnFragments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MyFragmentActivity.class);
-                startActivity(intent);
             }
         });
     }
