@@ -9,7 +9,7 @@ public class Album {
     private Date releaseDate;
     private String coverImageUrl;
     private Stats stats;
-    private Tag tag;
+    private List<Tag> tags;
     private List<Track> tracks;
 
     public Album(Artist artist, String name) {
@@ -57,12 +57,12 @@ public class Album {
         this.stats = stats;
     }
 
-    public Tag getTag() {
-        return tag;
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public List<Track> getTracks() {
