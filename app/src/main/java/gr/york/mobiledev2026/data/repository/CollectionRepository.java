@@ -17,19 +17,19 @@ import com.bumptech.glide.Glide;
 
 import gr.york.mobiledev2026.data.local.AppDatabase;
 import gr.york.mobiledev2026.data.local.AppExecutors;
-import gr.york.mobiledev2026.data.local.ArtistDao;
-import gr.york.mobiledev2026.data.local.ArtistEntity;
+import gr.york.mobiledev2026.data.local.CollectionDao;
+import gr.york.mobiledev2026.data.local.CollectionEntity;
 
-public class ArtistRepository {
-    private static final String TAG = ArtistRepository.class.getSimpleName();
-    private final ArtistDao artistDao;
+public class CollectionRepository {
+    private static final String TAG = CollectionRepository.class.getSimpleName();
+    private final CollectionDao collectionDao;
     private final AppExecutors executors;
     private final Application application;
 
-    public ArtistRepository(Application application) {
+    public CollectionRepository(Application application) {
         this.application = application;
         AppDatabase appDatabase = AppDatabase.getDatabase(application);
-        artistDao = appDatabase.artistDao();
+        collectionDao = appDatabase.artistDao();
         executors = AppExecutors.getInstance();
     }
 
@@ -49,35 +49,35 @@ public class ArtistRepository {
         });
     }
 
-    public LiveData<List<ArtistEntity>> getAllArtists() {
-        return artistDao.readAll();
+    public LiveData<List<CollectionEntity>> getAllArtists() {
+        return collectionDao.readAll();
     }
 
-    public LiveData<List<ArtistEntity>> getArtistsUpTo(int lim) {
+    public LiveData<List<CollectionEntity>> getArtistsUpTo(int lim) {
         if (lim <= 0) {
             throw new IllegalArgumentException("Limit must be greater than 0");
         }
-        return artistDao.readUpTo(lim);
+        return collectionDao.readUpTo(lim);
     }
 
-    public LiveData<List<ArtistEntity>> searchArtistsByName(String query) {
+    public LiveData<List<CollectionEntity>> searchArtistsByName(String query) {
         requireNonEmpty(query, "Search Query");
-        return artistDao.searchByName(query);
+        return collectionDao.searchByName(query);
     }
 
-    public LiveData<ArtistEntity> findArtistByName(String name) {
+    public LiveData<CollectionEntity> findArtistByName(String name) {
         requireNonEmpty(name, "Artist Name");
-        return artistDao.findByName(name);
+        return collectionDao.findByName(name);
     }
 
     public String getImagePathByName(String name) {
         requireNonEmpty(name, "Artist Name");
-        return artistDao.getImagePathByName(name);
+        return collectionDao.getImagePathByName(name);
     }
 
     public LiveData<String> getImagePathLiveDataByName(String name) {
         requireNonEmpty(name, "Artist Name");
-        return artistDao.getImagePathLiveDataByName(name);
+        return collectionDao.getImagePathLiveDataByName(name);
     }
 
     public LiveData<Bitmap> loadImageByName(String name) {
@@ -85,7 +85,7 @@ public class ArtistRepository {
 
         MutableLiveData<Bitmap> image = new MutableLiveData<>();
         executors.diskIO().execute(() -> {
-            String path = artistDao.getImagePathByName(name);
+            String path = collectionDao.getImagePathByName(name);
             if (path != null) {
                 try {
                     Bitmap bitmap = Glide.with(application)
@@ -125,29 +125,29 @@ public class ArtistRepository {
 
         String path = file.getAbsolutePath();
         executors.diskIO().execute(() -> {
-            ArtistEntity artist = artistDao.findByNameSync(name);
+            CollectionEntity artist = collectionDao.findByNameSync(name);
             if (artist != null) {
                 artist.setImagePath(path);
-                artistDao.update(artist);
+                collectionDao.update(artist);
             }
         });
 
         return path;
     }
 
-    public void insert(ArtistEntity artist) {
-        runAsync("insert " + artist.getName(), () -> artistDao.insert(artist));
+    public void insert(CollectionEntity artist) {
+        runAsync("insert " + artist.getName(), () -> collectionDao.insert(artist));
     }
 
-    public void update(ArtistEntity artist) {
-        runAsync("update " + artist.getName(), () -> artistDao.update(artist));
+    public void update(CollectionEntity artist) {
+        runAsync("update " + artist.getName(), () -> collectionDao.update(artist));
     }
 
-    public void save(ArtistEntity artist) {
-        runAsync("save " + artist.getName(), () -> artistDao.save(artist));
+    public void save(CollectionEntity artist) {
+        runAsync("save " + artist.getName(), () -> collectionDao.save(artist));
     }
 
-    public void delete(ArtistEntity artist) {
-        runAsync("delete " + artist.getName(), () -> artistDao.delete(artist));
+    public void delete(CollectionEntity artist) {
+        runAsync("delete " + artist.getName(), () -> collectionDao.delete(artist));
     }
 }

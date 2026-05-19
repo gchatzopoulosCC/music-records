@@ -10,32 +10,32 @@ import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
-import gr.york.mobiledev2026.data.local.ArtistEntity;
-import gr.york.mobiledev2026.data.repository.ArtistRepository;
+import gr.york.mobiledev2026.data.local.CollectionEntity;
+import gr.york.mobiledev2026.data.repository.CollectionRepository;
 
 public class CollectionViewModel extends AndroidViewModel {
-    private final ArtistRepository repository;
-    private final LiveData<List<ArtistEntity>> allArtists;
+    private final CollectionRepository repository;
+    private final LiveData<List<CollectionEntity>> allArtists;
 
     public CollectionViewModel(Application application) {
         super(application);
-        repository = new ArtistRepository(application);
+        repository = new CollectionRepository(application);
         allArtists = repository.getAllArtists();
     }
 
-    public LiveData<List<ArtistEntity>> getAllArtists() {
+    public LiveData<List<CollectionEntity>> getAllArtists() {
         return allArtists;
     }
 
-    public LiveData<List<ArtistEntity>> getArtistsUpTo(int lim) {
+    public LiveData<List<CollectionEntity>> getArtistsUpTo(int lim) {
         return repository.getArtistsUpTo(lim);
     }
 
-    public LiveData<List<ArtistEntity>> searchArtistsByName(String query) {
+    public LiveData<List<CollectionEntity>> searchArtistsByName(String query) {
         return repository.searchArtistsByName(query);
     }
 
-    public LiveData<ArtistEntity> findArtistByName(String name) {
+    public LiveData<CollectionEntity> findArtistByName(String name) {
         return repository.findArtistByName(name);
     }
 
@@ -51,19 +51,19 @@ public class CollectionViewModel extends AndroidViewModel {
         return repository.loadImageByName(name);
     }
 
-    public void insert(ArtistEntity artist) {
+    public void insert(CollectionEntity artist) {
         repository.insert(artist);
     }
 
-    public void update(ArtistEntity artist) {
+    public void update(CollectionEntity artist) {
         repository.update(artist);
     }
 
-    public void save(ArtistEntity artist) {
+    public void save(CollectionEntity artist) {
         repository.save(artist);
     }
 
-    public void delete(ArtistEntity artist) {
+    public void delete(CollectionEntity artist) {
         repository.delete(artist);
     }
 }
