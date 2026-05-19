@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026;
+package gr.york.mobiledev2026.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import gr.york.mobiledev2026.ui.database.DatabaseActivity;
 import gr.york.mobiledev2026.ui.storage.StorageActivity;
 import gr.york.mobiledev2026.databinding.ActivityMainBinding;
 import gr.york.mobiledev2026.fragment.MyFragmentActivity;

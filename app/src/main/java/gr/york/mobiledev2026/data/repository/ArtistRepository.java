@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.data.local;
+package gr.york.mobiledev2026.data.repository;
 
 import android.app.Application;
 import android.content.Context;
@@ -16,6 +16,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.bumptech.glide.Glide;
+
+import gr.york.mobiledev2026.data.local.AppDatabase;
+import gr.york.mobiledev2026.data.local.ArtistDao;
+import gr.york.mobiledev2026.data.local.ArtistEntity;
 
 public class ArtistRepository {
     private static final String TAG = ArtistRepository.class.getSimpleName();

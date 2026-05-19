@@ -11,11 +11,11 @@ import java.util.List;
 import gr.york.mobiledev2026.data.local.ArtistEntity;
 import gr.york.mobiledev2026.data.repository.ArtistRepository;
 
-public class ArtistViewModel extends AndroidViewModel {
+public class CollectionViewModel extends AndroidViewModel {
     private final ArtistRepository repository;
     private final LiveData<List<ArtistEntity>> allArtists;
 
-    public ArtistViewModel(Application application) {
+    public CollectionViewModel(Application application) {
         super(application);
         repository = new ArtistRepository(application);
         allArtists = repository.getAllArtists();

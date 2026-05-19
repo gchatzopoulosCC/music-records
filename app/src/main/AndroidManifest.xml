@@ -14,25 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YorkMobileDev2026">
         <activity
-            android:name=".fragment.MyFragmentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.storage.StorageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".recycler.RecyclerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".sample.SampleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".network.NetworkActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.database.DatabaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

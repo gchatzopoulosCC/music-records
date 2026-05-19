@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.data.local.artist;
+package gr.york.mobiledev2026.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

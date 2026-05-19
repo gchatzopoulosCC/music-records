@@ -14,16 +14,16 @@ import androidx.room.RoomDatabase;
         },
         version = 1
 )
-public abstract class Db extends RoomDatabase {
-    public static volatile Db INSTANCE;
+public abstract class AppDatabase extends RoomDatabase {
+    public static volatile AppDatabase INSTANCE;
 
-    public static Db getDatabase(Context context) {
+    public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
-            synchronized (Db.class) {
+            synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = databaseBuilder(
                             context.getApplicationContext(),
-                            Db.class, "db"
+                            AppDatabase.class, "db"
                     ).build();
                 }
             }
