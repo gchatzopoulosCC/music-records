@@ -12,29 +12,29 @@ import retrofit2.http.Path;
 
 public interface ApiService {
     @GET("album")
-    Call<List<Album>> getAlbums();
+    Call<ApiResponse<List<Album>>> getAlbums();
 
     @GET("album/{artist}")
-    Call<List<Album>> getAlbumsByArtist(@Path("artist") Artist artist);
+    Call<ApiResponse<List<Album>>> getAlbumsByArtist(@Path("artist") String artistName);
 
     @GET("album/{artist}/{name}")
-    Call<Album> getAlbumByArtistAndName(@Path("artist") Artist artist, @Path("name") String name);
+    Call<ApiResponse<Album>> getAlbumByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
 
     @GET("artist")
-    Call<List<Artist>> getArtists();
+    Call<ApiResponse<List<Artist>>> getArtists();
 
     @GET("artist/{name}")
-    Call<Artist> getArtistByName(@Path("name") String name);
+    Call<ApiResponse<Artist>> getArtistByName(@Path("name") String name);
 
     @GET("chart")
-    Call<Chart> getChart();
+    Call<ApiResponse<Chart>> getChart();
 
     @GET("track")
-    Call<List<Track>> getTracks();
+    Call<ApiResponse<List<Track>>> getTracks();
 
     @GET("track/{artist}")
-    Call<List<Track>> getTracksByArtist(@Path("artist") Artist artist);
+    Call<ApiResponse<List<Track>>> getTracksByArtist(@Path("artist") String artistName);
 
     @GET("track/{artist}/{name}")
-    Call<Track> getTrackByArtistAndName(@Path("artist") Artist artist, @Path("name") String name);
+    Call<ApiResponse<Track>> getTrackByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
 }
