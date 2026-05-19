@@ -10,8 +10,7 @@ public class Album {
     private String coverImageUrl;
     private int listeners;
     private int playcount;
-    private String genre;
-    private String url;
+    private Tag tag;
     private List<Track> tracks;
 
     public Album(Artist artist, String name) {
@@ -67,20 +66,12 @@ public class Album {
         this.playcount = playcount;
     }
 
-    public String getGenre() {
-        return genre;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public List<Track> getTracks() {
