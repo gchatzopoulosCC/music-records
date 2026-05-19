@@ -9,13 +9,13 @@ public class Artist {
     private Stats stats;
     private List<Artist> similarArtists;
     private List<Tag> tags;
-    private Biography biography;
+    private Description biography;
 
     public Artist(String name) {
         this.name = name;
     }
 
-    public Artist(String name, String url, String imageUrl, Stats stats, List<Artist> similarArtists, List<Tag> tags, Biography biography) {
+    public Artist(String name, String url, String imageUrl, Stats stats, List<Artist> similarArtists, List<Tag> tags, Description biography) {
         this.name = name;
         this.url = url;
         this.imageUrl = imageUrl;
@@ -73,11 +73,11 @@ public class Artist {
         this.tags = tags;
     }
 
-    public Biography getBiography() {
+    public Description getBiography() {
         return biography;
     }
 
-    public void setBiography(Biography biography) {
+    public void setBiography(Description biography) {
         this.biography = biography;
     }
 }
