@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import gr.york.mobiledev2026.R;
+import gr.york.mobiledev2026.data.model.Track;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.TrackViewHolder> {
 
-    private List<String> tracks;
+    private final List<Track> tracks;
 
-    public TrackListAdapter(List<String> tracks) {
+    public TrackListAdapter(List<Track> tracks) {
         this.tracks = tracks;
     }
 
@@ -31,8 +32,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
 
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
-        String trackName = tracks.get(position);
-        holder.trackNameTextView.setText(trackName);
+        Track track = tracks.get(position);
+        holder.bind(track);
     }
 
     @Override
@@ -40,19 +41,25 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
         return tracks != null ? tracks.size() : 0;
     }
 
-    // Call this to refresh the tracks (e.g., when the artist changes)
-    public void updateData(List<String> newTracks) {
-        this.tracks = newTracks;
-        notifyDataSetChanged();
-    }
-
-    static class TrackViewHolder extends RecyclerView.ViewHolder {
-        TextView trackNameTextView;
+    public static class TrackViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView listeners;
+        TextView duration;
 
         TrackViewHolder(View itemView) {
             super(itemView);
-            // Matches the ID in tracks_list_item.xml
-            trackNameTextView = itemView.findViewById(R.id.trackItem);
+            name = itemView.findViewById(R.id.trackItem);
+            listeners = itemView.findViewById(R.id.listeners);
+            duration = itemView.findViewById(R.id.duration);
+        }
+
+        void bind(Track item) {
+            name.setText(item.getName());
+            listeners.setText(itemView.getContext().getString(R.string.listeners_format, item.getStats().getListeners()));
+            int secondsDuration = item.getDuration() / 1000;
+            int minutes = secondsDuration / 60;
+            int seconds = secondsDuration % 60;
+            duration.setText(itemView.getContext().getString(R.string.duration_format, minutes, seconds));
         }
     }
 }

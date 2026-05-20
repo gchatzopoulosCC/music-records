@@ -1,6 +1,7 @@
 package gr.york.mobiledev2026.ui.collection;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -49,6 +50,10 @@ public class CollectionViewModel extends AndroidViewModel {
 
     public LiveData<Bitmap> loadArtistImage(String name) {
         return repository.loadImageByName(name);
+    }
+
+    public String saveImage(String name, Bitmap image) {
+        return repository.saveImage(getApplication(), name, image);
     }
 
     public void insert(CollectionEntity artist) {

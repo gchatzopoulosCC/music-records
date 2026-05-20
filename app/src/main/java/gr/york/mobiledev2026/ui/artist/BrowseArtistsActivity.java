@@ -1,32 +1,38 @@
-package gr.york.mobiledev2026;
+package gr.york.mobiledev2026.ui.artist;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
+import gr.york.mobiledev2026.R;
+import gr.york.mobiledev2026.ui.track.TracksActivity;
+import gr.york.mobiledev2026.data.service.ArtistService;
 import gr.york.mobiledev2026.databinding.BrowseBinding;
 import gr.york.mobiledev2026.recycler.ArtistsListAdapter;
-import gr.york.mobiledev2026.ui.artist.ArtistViewModel;
+import gr.york.mobiledev2026.ui.collection.CollectionsActivity;
 
-public class BrowseActivity extends AppCompatActivity {
+public class BrowseArtistsActivity extends AppCompatActivity {
 
+    private final Handler searchHandler = new Handler(Looper.getMainLooper());
     private BrowseBinding binding;
-    private ArtistViewModel artistsViewModel;
+    private ArtistService artistsService;
+
+    private ArtistViewModel artistViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +40,12 @@ public class BrowseActivity extends AppCompatActivity {
         binding = BrowseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize ViewModel
-        artistsViewModel = new ViewModelProvider(this).get(ArtistViewModel.class);
+        artistViewModel = new ViewModelProvider(this).get(ArtistViewModel.class);
 
         // UI Setup
         setupNavigation();
-        setupRecyclerView();
         setupSearchBar();
+        setupRecyclerView();
     }
 
     private void setupNavigation() {
@@ -81,7 +86,10 @@ public class BrowseActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                artistsViewModel.setSearchQuery(newText);
+                searchHandler.removeCallbacksAndMessages(null);
+                searchHandler.postDelayed(() -> {
+                    artistViewModel.search(newText);
+                }, 300);
                 return true;
             }
         });
@@ -107,14 +115,13 @@ public class BrowseActivity extends AppCompatActivity {
         });
 
         ArtistsListAdapter adapter = new ArtistsListAdapter(new ArrayList<>(), artist -> {
-            Intent intent = new Intent(BrowseActivity.this, ArtistPageActivity.class);
+            Intent intent = new Intent(BrowseArtistsActivity.this, ArtistPageActivity.class);
             intent.putExtra("ARTIST_NAME", artist.getName());
             startActivity(intent);
         });
         binding.recycleView.setAdapter(adapter);
 
-        // Observe the search results
-        artistsViewModel.getSearchResults().observe(this, artists -> {
+        artistViewModel.getArtistsList().observe(this, artists -> {
             if (artists != null) {
                 adapter.updateData(artists);
             }

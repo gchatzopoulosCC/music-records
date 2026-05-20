@@ -14,15 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
         <activity
-            android:name=".TracksActivity"
+            android:name=".ui.track.TracksActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicApp" />
         <activity
-            android:name=".CollectionsActivity"
+            android:name=".ui.collection.CollectionsActivity"
             android:exported="false"
             android:theme="@style/Theme.MusicApp" />
         <activity
-            android:name=".BrowseActivity"
+            android:name=".ui.artist.BrowseArtistsActivity"
             android:exported="true"
             android:theme="@style/Theme.MusicApp">
             <intent-filter>

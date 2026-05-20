@@ -9,17 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import gr.york.mobiledev2026.R;
-import gr.york.mobiledev2026.database.artist.ArtistEntity;
+import gr.york.mobiledev2026.data.model.Artist;
 
 public class SimilarArtistsListAdapter extends RecyclerView.Adapter<SimilarArtistsListAdapter.SimilarViewHolder> {
+    private List<Artist> artists;
+    private final OnItemClickListener<Artist> listener;
 
-    private List<ArtistEntity> artists;
-
-    public SimilarArtistsListAdapter(List<ArtistEntity> artists) {
+    public SimilarArtistsListAdapter(List<Artist> artists, OnItemClickListener<Artist> listener) {
         this.artists = artists;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,11 +35,8 @@ public class SimilarArtistsListAdapter extends RecyclerView.Adapter<SimilarArtis
 
     @Override
     public void onBindViewHolder(@NonNull SimilarViewHolder holder, int position) {
-        ArtistEntity artist = artists.get(position);
-        holder.nameTextView.setText(artist.getName());
-
-        // TODO: Load image if you have it
-        // holder.imageView.setImageBitmap(...)
+        Artist artist = artists.get(position);
+        holder.bind(artist);
     }
 
     @Override
@@ -44,20 +44,34 @@ public class SimilarArtistsListAdapter extends RecyclerView.Adapter<SimilarArtis
         return artists != null ? artists.size() : 0;
     }
 
-    public void updateData(List<ArtistEntity> newData) {
+    public void updateData(List<Artist> newData) {
         this.artists = newData;
         notifyDataSetChanged();
     }
 
-    static class SimilarViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView;
-        ImageView imageView;
+    public class SimilarViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        ImageView image;
 
         SimilarViewHolder(View itemView) {
             super(itemView);
             // Matches IDs in bounded_artist_card.xml
-            nameTextView = itemView.findViewById(R.id.track_text);
-            imageView = itemView.findViewById(R.id.track_img);
+            name = itemView.findViewById(R.id.track_text);
+            image = itemView.findViewById(R.id.track_img);
+        }
+
+        void bind(Artist item) {
+            name.setText(item.getName());
+            Glide.with(itemView.getContext())
+                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .placeholder(R.mipmap.ic_launcher)
+                .into(image);
+
+            if (listener != null) {
+                itemView.setOnClickListener(v -> {
+                    listener.onItemClick(item);
+                });
+            }
         }
     }
 }

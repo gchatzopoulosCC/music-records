@@ -6,66 +6,65 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import gr.york.mobiledev2026.R;
-import gr.york.mobiledev2026.database.artist.ArtistEntity;
+import gr.york.mobiledev2026.data.model.Artist;
 
 public class ArtistsListAdapter extends RecyclerView.Adapter<ArtistsListAdapter.MyViewHolder> {
-
-    public interface OnItemClickListener {
-        void onItemClick(ArtistEntity artist);
-    }
-    private List<ArtistEntity> dataList;
-    private OnItemClickListener listener;
-    public ArtistsListAdapter(List<ArtistEntity> dataList) {
+    private List<Artist> dataList;
+    private OnItemClickListener<Artist> listener;
+    public ArtistsListAdapter(List<Artist> dataList) {
         this.dataList = dataList;
     }
-    public ArtistsListAdapter(List<ArtistEntity> dataList, OnItemClickListener listener) {
+    public ArtistsListAdapter(List<Artist> dataList, OnItemClickListener<Artist> listener) {
         this.dataList = dataList;
         this.listener = listener;
     }
 
-    // Called when RecyclerView needs a new ViewHolder
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.artist_card, parent, false);
-        return new MyViewHolder(view, listener);
+        return new MyViewHolder(view);
     }
-    // Called to display data at specified position
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ArtistEntity item = dataList.get(position);
+        Artist item = dataList.get(position);
         holder.bind(item);
     }
-    // Total number of items
+
     @Override
     public int getItemCount() {
         return dataList.size();
     }
 
-    public void updateData(List<ArtistEntity> newData) {
+    public void updateData(List<Artist> newData) {
         this.dataList = newData;
         notifyDataSetChanged();
     }
-    // ViewHolder class (usually inner class)
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView image;
-        OnItemClickListener listener;
-        MyViewHolder(View itemView, OnItemClickListener l) {
+        MyViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.artist_text);
             image = itemView.findViewById(R.id.artist_img);
-            this.listener = l;
         }
-        void bind(ArtistEntity item) {
+        void bind(Artist item) {
             title.setText(item.getName());
-//            TODO: image for artists
-//            image.setImageBitmap(item.getImagePath());
+            Glide.with(itemView.getContext())
+                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .placeholder(R.mipmap.ic_launcher)
+                .into(image);
 
             if (listener != null) {
                 itemView.setOnClickListener(v -> {

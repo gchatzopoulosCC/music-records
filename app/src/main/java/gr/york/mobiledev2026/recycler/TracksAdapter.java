@@ -9,23 +9,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import gr.york.mobiledev2026.R;
-import gr.york.mobiledev2026.database.track.Track;
+import gr.york.mobiledev2026.data.model.Artist;
+import gr.york.mobiledev2026.data.model.Track;
 
 public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewHolder> {
 
     private List<Track> tracks;
+    private final OnItemClickListener<Artist> listener;
 
-    public TracksAdapter(List<Track> tracks) {
+    public TracksAdapter(List<Track> tracks, OnItemClickListener<Artist> listener) {
         this.tracks = tracks;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflates the simpler track list item layout
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.track_card, parent, false);
         return new TrackViewHolder(view);
@@ -34,9 +38,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
         Track track = tracks.get(position);
-        holder.trackNameTextView.setText(track.getName());
-        holder.trackImg.setImageBitmap(track.getImage());
-        holder.artistNameView.setText(track.getArtist());
+        holder.bind(track);
+    }
+
+    public void updateData(List<Track> newData) {
+        this.tracks = newData;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -44,18 +51,31 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
         return tracks != null ? tracks.size() : 0;
     }
 
-    static class TrackViewHolder extends RecyclerView.ViewHolder {
-        TextView trackNameTextView;
-        TextView artistNameView;
+    public class TrackViewHolder extends RecyclerView.ViewHolder {
+        TextView trackName;
+        TextView artistName;
         ImageView trackImg;
 
 
         TrackViewHolder(View itemView) {
             super(itemView);
             // Matches the ID in tracks_list_item.xml
-            trackNameTextView = itemView.findViewById(R.id.track_text);
-            artistNameView = itemView.findViewById(R.id.artist_text);
+            trackName = itemView.findViewById(R.id.track_text);
+            artistName = itemView.findViewById(R.id.artist_text);
             trackImg = itemView.findViewById(R.id.track_img);
+        }
+
+        void bind(Track item) {
+            trackName.setText(item.getName());
+            artistName.setText(item.getArtist().getName());
+            Glide.with(itemView.getContext())
+                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .placeholder(R.mipmap.ic_launcher)
+                .into(trackImg);
+
+            if (listener != null) {
+                itemView.setOnClickListener(v -> listener.onItemClick(item.getArtist()));
+            }
         }
     }
 }

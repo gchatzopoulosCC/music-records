@@ -1,24 +1,33 @@
-package gr.york.mobiledev2026;
+package gr.york.mobiledev2026.ui.track;
 
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import gr.york.mobiledev2026.R;
+import gr.york.mobiledev2026.data.model.Artist;
 import gr.york.mobiledev2026.databinding.TracksBinding;
+import gr.york.mobiledev2026.recycler.ArtistsListAdapter;
+import gr.york.mobiledev2026.recycler.CollectionListAdapter;
+import gr.york.mobiledev2026.recycler.TracksAdapter;
+import gr.york.mobiledev2026.ui.artist.ArtistPageActivity;
+import gr.york.mobiledev2026.ui.artist.BrowseArtistsActivity;
+import gr.york.mobiledev2026.ui.collection.CollectionsActivity;
 
 public class TracksActivity extends AppCompatActivity {
 
     private TracksBinding binding;
+
+    private TrackViewModel trackViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +35,14 @@ public class TracksActivity extends AppCompatActivity {
         binding = TracksBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        trackViewModel = new ViewModelProvider(this).get(TrackViewModel.class);
+
         binding.bottomNavigationView.setSelectedItemId(R.id.tracks);
 
         binding.bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.home) {
-                startActivity(new Intent(this, BrowseActivity.class));
+                startActivity(new Intent(this, BrowseArtistsActivity.class));
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
@@ -60,6 +71,20 @@ public class TracksActivity extends AppCompatActivity {
                 outRect.left = spacing - column * spacing / spanCount;
                 outRect.right = (column + 1) * spacing / spanCount;
                 outRect.bottom = spacing;
+            }
+        });
+
+        TracksAdapter adapter = new TracksAdapter(new ArrayList<>(), artist -> {
+            Intent intent = new Intent(TracksActivity.this, ArtistPageActivity.class);
+            intent.putExtra("ARTIST_NAME", artist.getName());
+            startActivity(intent);
+        });
+
+        binding.recycleView.setAdapter(adapter);
+
+        trackViewModel.getTracksList().observe(this, tracks -> {
+            if (tracks != null) {
+                adapter.updateData(tracks);
             }
         });
     }
