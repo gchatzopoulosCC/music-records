@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.data.service;
+package gr.york.mobiledev2026.data.api;
 
 import java.util.List;
 

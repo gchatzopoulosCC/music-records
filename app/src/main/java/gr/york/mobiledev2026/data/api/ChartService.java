@@ -1,4 +1,4 @@
-package gr.york.mobiledev2026.data.service;
+package gr.york.mobiledev2026.data.api;
 
 import gr.york.mobiledev2026.data.model.Chart;
 import gr.york.mobiledev2026.data.remote.ApiResponse;
