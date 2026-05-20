@@ -37,4 +37,8 @@ public class TrackRepository {
     public LiveData<Resource<Track>> getTrackByArtistAndName(String artistName, String name) {
         return NetworkUtils.processObservable(service.getTrackByArtistAndName(artistName, name), Track::isValid);
     }
+
+    public LiveData<Resource<List<Track>>> searchTracks(String query) {
+        return NetworkUtils.processObservable(service.searchTracks(query));
+    }
 }

@@ -18,4 +18,7 @@ public interface ArtistService {
 
     @GET("?method=artist.gettoptracks")
     Observable<ApiResponse<List<Track>>> getTopTracksByArtist(@Query("artist") String name);
+
+    @GET("?method=artist.search")
+    Observable<ApiResponse<List<Artist>>> searchArtists(@Query("artist") String query);
 }

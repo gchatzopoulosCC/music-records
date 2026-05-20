@@ -17,4 +17,7 @@ public interface AlbumService {
 
     @GET("?method=album.getinfo")
     Observable<ApiResponse<Album>> getAlbumByArtistAndName(@Query("artist") String artistName, @Query("album") String name);
+
+    @GET("?method=album.search")
+    Observable<ApiResponse<List<Album>>> searchAlbums(@Query("album") String query);
 }

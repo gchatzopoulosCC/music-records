@@ -70,5 +70,19 @@ public class TrackRepositoryTest {
             throw new RuntimeException("ERROR WAS: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testSearchTracksApi() {
+        try {
+            LiveData<Resource<List<Track>>> liveData = repository.searchTracks("Believe");
+            Resource<List<Track>> result = LiveDataTestUtil.getOrAwaitValue(liveData);
+            assertNotNull(result);
+            assertEquals("API returned error: " + result.message, Status.SUCCESS, result.status);
+            assertNotNull(result.data);
+            assertFalse(result.data.isEmpty());
+        } catch (Exception e) {
+            throw new RuntimeException("ERROR WAS: " + e.getMessage());
+        }
+    }
 }
 

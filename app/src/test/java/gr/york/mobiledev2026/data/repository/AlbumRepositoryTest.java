@@ -57,4 +57,18 @@ public class AlbumRepositoryTest {
             throw new RuntimeException("ERROR WAS: " + e.getMessage() + " caused by: " + (e.getCause() != null ? e.getCause().getMessage() : "null"));
         }
     }
+
+    @Test
+    public void testSearchAlbumsApi() {
+        try {
+            LiveData<Resource<List<Album>>> liveData = repository.searchAlbums("Believe");
+            Resource<List<Album>> result = LiveDataTestUtil.getOrAwaitValue(liveData);
+            assertNotNull(result);
+            assertEquals("API returned error: " + result.message, Status.SUCCESS, result.status);
+            assertNotNull(result.data);
+            assertFalse(result.data.isEmpty());
+        } catch (Exception e) {
+            throw new RuntimeException("ERROR WAS: " + e.getMessage() + " caused by: " + (e.getCause() != null ? e.getCause().getMessage() : "null"));
+        }
+    }
 }

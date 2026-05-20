@@ -37,4 +37,8 @@ public class AlbumRepository {
     public LiveData<Resource<Album>> getAlbumByArtistAndName(String artistName, String name) {
         return NetworkUtils.processObservable(service.getAlbumByArtistAndName(artistName, name), Album::isValid);
     }
+
+    public LiveData<Resource<List<Album>>> searchAlbums(String query) {
+        return NetworkUtils.processObservable(service.searchAlbums(query));
+    }
 }

@@ -38,4 +38,8 @@ public class ArtistRepository {
     public LiveData<Resource<List<Track>>> getTopTracksByArtist(String name) {
         return NetworkUtils.processObservable(service.getTopTracksByArtist(name));
     }
+
+    public LiveData<Resource<List<Artist>>> searchArtists(String query) {
+        return NetworkUtils.processObservable(service.searchArtists(query));
+    }
 }

@@ -71,5 +71,19 @@ public class ArtistRepositoryTest {
             throw new RuntimeException("ERROR WAS: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testSearchArtistsApi() {
+        try {
+            LiveData<Resource<List<Artist>>> liveData = repository.searchArtists("Cher");
+            Resource<List<Artist>> result = LiveDataTestUtil.getOrAwaitValue(liveData);
+            assertNotNull(result);
+            assertEquals("API returned error: " + result.message, Status.SUCCESS, result.status);
+            assertNotNull(result.data);
+            assertFalse(result.data.isEmpty());
+        } catch (Exception e) {
+            throw new RuntimeException("ERROR WAS: " + e.getMessage());
+        }
+    }
 }
 

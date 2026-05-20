@@ -17,4 +17,7 @@ public interface TrackService {
 
     @GET("?method=track.getinfo")
     Observable<ApiResponse<Track>> getTrackByArtistAndName(@Query("artist") String artistName, @Query("track") String name);
+
+    @GET("?method=track.search")
+    Observable<ApiResponse<List<Track>>> searchTracks(@Query("track") String query);
 }
