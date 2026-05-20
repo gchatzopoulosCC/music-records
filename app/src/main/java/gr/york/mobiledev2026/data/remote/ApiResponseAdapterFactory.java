@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ApiResponseAdapterFactory implements JsonAdapter.Factory {
                                 }
                             }
                             reader.endObject();
-                            tags = java.util.Collections.singletonList(new Tag(tagName, tagUrl));
+                            tags = Collections.singletonList(new Tag(tagName, tagUrl));
                         } else {
                             reader.skipValue();
                         }
@@ -97,7 +98,6 @@ public class ApiResponseAdapterFactory implements JsonAdapter.Factory {
         public List<Track> fromJson(JsonReader reader, JsonAdapter<List<Track>> delegate) throws IOException {
             JsonReader.Token token = reader.peek();
             if (token == JsonReader.Token.BEGIN_OBJECT) {
-                // Read {"track": [...]} or {"track": {...}}
                 reader.beginObject();
                 List<Track> tracks = null;
                 while (reader.hasNext()) {
@@ -174,7 +174,7 @@ public class ApiResponseAdapterFactory implements JsonAdapter.Factory {
                 for (String key : jsonMap.keySet()) {
                     if (!key.equals("error")) {
                         Object content = jsonMap.get(key);
-                        if (java.util.List.class.isAssignableFrom(Types.getRawType(dataType))) {
+                        if (List.class.isAssignableFrom(Types.getRawType(dataType))) {
                             if (content instanceof Map) {
                                 Object foundList = findFirstList((Map<String, Object>) content);
                                 if (foundList != null) {
