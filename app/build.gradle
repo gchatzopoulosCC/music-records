@@ -70,6 +70,9 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
 
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
