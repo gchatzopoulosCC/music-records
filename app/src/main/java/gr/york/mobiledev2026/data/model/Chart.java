@@ -36,4 +36,8 @@ public class Chart {
     public void setTopTags(List<Tag> topTags) {
         this.topTags = topTags;
     }
+
+    public boolean isValid() {
+        return topArtists != null && topTracks != null && topTags != null;
+    }
 }

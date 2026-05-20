@@ -72,4 +72,8 @@ public class Album {
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty() && artist != null && artist.isValid();
+    }
 }
