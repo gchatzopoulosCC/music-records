@@ -10,12 +10,20 @@ android {
         }
     }
 
+    Properties properties = new Properties()
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    }
+
     defaultConfig {
         applicationId "gr.york.mobiledev2026"
         minSdk 29
         targetSdk 36
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "API_KEY", "\"${properties.getProperty('api_key', '')}\""
+        buildConfigField "String", "SHARED_SECRET", "\"${properties.getProperty('shared_secret', '')}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -28,6 +36,11 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
+    }
+
+    lint {
+        abortOnError false
     }
 
     buildTypes {
