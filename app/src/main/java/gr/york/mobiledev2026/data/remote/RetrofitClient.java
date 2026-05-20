@@ -3,6 +3,9 @@ package gr.york.mobiledev2026.data.remote;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.squareup.moshi.Moshi;
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter;
+
+import java.util.Date;
 
 import gr.york.mobiledev2026.BuildConfig;
 import okhttp3.HttpUrl;
@@ -48,10 +51,18 @@ public class RetrofitClient {
                 .writeTimeout(30, SECONDS)
                 .build();
 
+            Moshi moshi = new Moshi.Builder()
+                .add(new ApiResponseAdapterFactory.ArtistFallbackAdapter())
+                .add(new ApiResponseAdapterFactory.TagListFallbackAdapter())
+                .add(new ApiResponseAdapterFactory.TrackListFallbackAdapter())
+                .add(new ApiResponseAdapterFactory())
+                .add(Date.class, new Rfc3339DateJsonAdapter())
+                .build();
+
             retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addConverterFactory(MoshiConverterFactory.create(new Moshi.Builder().build()))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
         }

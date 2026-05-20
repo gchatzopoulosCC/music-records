@@ -7,14 +7,15 @@ import gr.york.mobiledev2026.data.remote.ApiResponse;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AlbumService {
-    @GET("album")
+    @GET("?method=album.search&album=best")
     Observable<ApiResponse<List<Album>>> getAlbums();
 
-    @GET("album/{artist}")
-    Observable<ApiResponse<List<Album>>> getAlbumsByArtist(@Path("artist") String artistName);
+    @GET("?method=artist.gettopalbums")
+    Observable<ApiResponse<List<Album>>> getAlbumsByArtist(@Query("artist") String artistName);
 
-    @GET("album/{artist}/{name}")
-    Observable<ApiResponse<Album>> getAlbumByArtistAndName(@Path("artist") String artistName, @Path("name") String name);
+    @GET("?method=album.getinfo")
+    Observable<ApiResponse<Album>> getAlbumByArtistAndName(@Query("artist") String artistName, @Query("album") String name);
 }
