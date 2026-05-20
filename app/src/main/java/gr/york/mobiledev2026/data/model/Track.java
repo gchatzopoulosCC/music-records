@@ -112,4 +112,8 @@ public class Track {
     public void setWiki(Description wiki) {
         this.wiki = wiki;
     }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty() && artist != null && artist.isValid();
+    }
 }

@@ -80,4 +80,8 @@ public class Artist {
     public void setBiography(Description biography) {
         this.biography = biography;
     }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty();
+    }
 }
