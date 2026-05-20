@@ -7,15 +7,15 @@ import gr.york.mobiledev2026.data.model.Track;
 import gr.york.mobiledev2026.data.remote.ApiResponse;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ArtistService {
-    @GET("artist")
+    @GET("?method=chart.gettopartists")
     Observable<ApiResponse<List<Artist>>> getArtists();
 
-    @GET("artist/{name}")
-    Observable<ApiResponse<Artist>> getArtistByName(@Path("name") String name);
+    @GET("?method=artist.getinfo")
+    Observable<ApiResponse<Artist>> getArtistByName(@Query("artist") String name);
 
-    @GET("artist/{name}/toptracks")
-    Observable<ApiResponse<List<Track>>> getTopTracksByArtist(@Path("name") String name);
+    @GET("?method=artist.gettoptracks")
+    Observable<ApiResponse<List<Track>>> getTopTracksByArtist(@Query("artist") String name);
 }

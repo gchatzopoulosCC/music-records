@@ -4,8 +4,13 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter;
+import com.squareup.moshi.FromJson;
+import com.squareup.moshi.ToJson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import gr.york.mobiledev2026.BuildConfig;
 import okhttp3.HttpUrl;
@@ -21,6 +26,25 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 public class RetrofitClient {
     private static final String BASE_URL = "http://ws.audioscrobbler.com/2.0/";
     private static Retrofit retrofit = null;
+
+    static class LastFmDateAdapter {
+        private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.US);
+
+        @FromJson
+        public Date fromJson(String dateString) {
+            try {
+                return dateFormat.parse(dateString);
+            } catch (ParseException e) {
+                // fallback to try another format or return null
+                return null;
+            }
+        }
+
+        @ToJson
+        public String toJson(Date date) {
+            return dateFormat.format(date);
+        }
+    }
 
     public static Retrofit getClient() {
         if (retrofit == null) {
@@ -56,7 +80,7 @@ public class RetrofitClient {
                 .add(new ApiResponseAdapterFactory.TagListFallbackAdapter())
                 .add(new ApiResponseAdapterFactory.TrackListFallbackAdapter())
                 .add(new ApiResponseAdapterFactory())
-                .add(Date.class, new Rfc3339DateJsonAdapter())
+                .add(new LastFmDateAdapter())
                 .build();
 
             retrofit = new Retrofit.Builder()

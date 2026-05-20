@@ -26,12 +26,11 @@ public class AlbumRepositoryTest {
 
     @Before
     public void setUp() {
-        // Use the real repository without mocks
         repository = AlbumRepository.getInstance();
     }
 
     @Test
-    public void testGetAlbumsRealApi() {
+    public void testGetAlbumsApi() {
         try {
             LiveData<Resource<List<Album>>> liveData = repository.getAlbums();
             Resource<List<Album>> result = LiveDataTestUtil.getOrAwaitValue(liveData);
@@ -45,7 +44,7 @@ public class AlbumRepositoryTest {
     }
 
     @Test
-    public void testGetAlbumByArtistAndNameRealApi() {
+    public void testGetAlbumByArtistAndNameApi() {
         try {
             LiveData<Resource<Album>> liveData = repository.getAlbumByArtistAndName("Cher", "Believe");
             Resource<Album> result = LiveDataTestUtil.getOrAwaitValue(liveData);

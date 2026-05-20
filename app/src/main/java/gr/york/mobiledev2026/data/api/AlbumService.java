@@ -6,7 +6,6 @@ import gr.york.mobiledev2026.data.model.Album;
 import gr.york.mobiledev2026.data.remote.ApiResponse;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface AlbumService {
