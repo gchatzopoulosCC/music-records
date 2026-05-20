@@ -10,12 +10,13 @@ public class Artist {
     private List<Artist> similarArtists;
     private List<Tag> tags;
     private Description biography;
+    private List<Track> topTracks;
 
     public Artist(String name) {
         this.name = name;
     }
 
-    public Artist(String name, String url, String imageUrl, Stats stats, List<Artist> similarArtists, List<Tag> tags, Description biography) {
+    public Artist(String name, String url, String imageUrl, Stats stats, List<Artist> similarArtists, List<Tag> tags, Description biography, List<Track> topTracks) {
         this.name = name;
         this.url = url;
         this.imageUrl = imageUrl;
@@ -23,6 +24,7 @@ public class Artist {
         this.similarArtists = similarArtists;
         this.tags = tags;
         this.biography = biography;
+        this.topTracks = topTracks;
     }
 
     public String getName() {
@@ -79,5 +81,13 @@ public class Artist {
 
     public void setBiography(Description biography) {
         this.biography = biography;
+    }
+
+    public List<Track> getTopTracks() {
+        return topTracks;
+    }
+
+    public void setTopTracks(List<Track> topTracks) {
+        this.topTracks = topTracks;
     }
 }
