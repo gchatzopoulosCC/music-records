@@ -15,16 +15,20 @@ import gr.york.mobiledev2026.data.model.Track;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.TrackViewHolder> {
 
-    private final List<Track> tracks;
+    private List<Track> tracks;
 
     public TrackListAdapter(List<Track> tracks) {
         this.tracks = tracks;
     }
 
+    public void updateData(List<Track> newTracks) {
+        this.tracks = newTracks;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflates the simpler track list item layout
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.tracks_list_item, parent, false);
         return new TrackViewHolder(view);
@@ -44,22 +48,23 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView listeners;
-        TextView duration;
 
         TrackViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.trackItem);
             listeners = itemView.findViewById(R.id.listeners);
-            duration = itemView.findViewById(R.id.duration);
         }
 
         void bind(Track item) {
             name.setText(item.getName());
-            listeners.setText(itemView.getContext().getString(R.string.listeners_format, item.getStats().getListeners()));
-            int secondsDuration = item.getDuration() / 1000;
-            int minutes = secondsDuration / 60;
-            int seconds = secondsDuration % 60;
-            duration.setText(itemView.getContext().getString(R.string.duration_format, minutes, seconds));
+            if (item.getStats() != null) {
+                listeners.setText(itemView.getContext().getString(R.string.listeners_format, item.getStats().getListeners()));
+            } else {
+                listeners.setText("");
+            }
+            int totalSeconds = item.getDuration();
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
         }
     }
 }

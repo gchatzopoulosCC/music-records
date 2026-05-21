@@ -38,7 +38,6 @@ public class TracksActivity extends AppCompatActivity {
         trackViewModel = new ViewModelProvider(this).get(TrackViewModel.class);
 
         binding.bottomNavigationView.setSelectedItemId(R.id.tracks);
-
         binding.bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.home) {
@@ -56,6 +55,7 @@ public class TracksActivity extends AppCompatActivity {
             }
             return false;
         });
+
 
         binding.recycleView.setLayoutManager(new GridLayoutManager(this, 2));
 

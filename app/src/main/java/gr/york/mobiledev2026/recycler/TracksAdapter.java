@@ -59,7 +59,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
         TrackViewHolder(View itemView) {
             super(itemView);
-            // Matches the ID in tracks_list_item.xml
             trackName = itemView.findViewById(R.id.track_text);
             artistName = itemView.findViewById(R.id.artist_text);
             trackImg = itemView.findViewById(R.id.track_img);
@@ -67,14 +66,15 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
         void bind(Track item) {
             trackName.setText(item.getName());
-            artistName.setText(item.getArtist().getName());
+            Artist artist = item.getArtist();
+            artistName.setText(artist != null ? artist.getName() : "");
             Glide.with(itemView.getContext())
-                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .load(item.getImageUrl())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(trackImg);
 
-            if (listener != null) {
-                itemView.setOnClickListener(v -> listener.onItemClick(item.getArtist()));
+            if (listener != null && artist != null) {
+                itemView.setOnClickListener(v -> listener.onItemClick(artist));
             }
         }
     }

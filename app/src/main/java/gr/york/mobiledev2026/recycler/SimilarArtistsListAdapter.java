@@ -55,7 +55,6 @@ public class SimilarArtistsListAdapter extends RecyclerView.Adapter<SimilarArtis
 
         SimilarViewHolder(View itemView) {
             super(itemView);
-            // Matches IDs in bounded_artist_card.xml
             name = itemView.findViewById(R.id.track_text);
             image = itemView.findViewById(R.id.track_img);
         }
@@ -63,7 +62,7 @@ public class SimilarArtistsListAdapter extends RecyclerView.Adapter<SimilarArtis
         void bind(Artist item) {
             name.setText(item.getName());
             Glide.with(itemView.getContext())
-                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .load(item.getImageUrl())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(image);
 

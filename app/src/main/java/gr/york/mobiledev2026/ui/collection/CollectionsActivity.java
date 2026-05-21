@@ -32,7 +32,6 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionViewModel = new ViewModelProvider(this).get(CollectionViewModel.class);
 
         binding.bottomNavigationView.setSelectedItemId(R.id.collections);
-
         binding.bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             int id = menuItem.getItemId();
             if (id == R.id.home) {
@@ -61,7 +60,6 @@ public class CollectionsActivity extends AppCompatActivity {
 
         collectionViewModel.getAllArtists().observe(this, list -> {
             if (list != null) {
-                // Just update the list names/paths in the adapter
                 adapter.updateData(list);
             }
         });

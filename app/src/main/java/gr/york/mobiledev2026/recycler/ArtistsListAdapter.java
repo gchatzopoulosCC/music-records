@@ -62,7 +62,7 @@ public class ArtistsListAdapter extends RecyclerView.Adapter<ArtistsListAdapter.
         void bind(Artist item) {
             title.setText(item.getName());
             Glide.with(itemView.getContext())
-                .load(item.getImageUrl()) // This works for BOTH URLs and Local Paths
+                .load(item.getImageUrl())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(image);
 

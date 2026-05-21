@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import gr.york.mobiledev2026.R;
 import gr.york.mobiledev2026.ui.track.TracksActivity;
-import gr.york.mobiledev2026.data.service.ArtistService;
 import gr.york.mobiledev2026.databinding.BrowseBinding;
 import gr.york.mobiledev2026.recycler.ArtistsListAdapter;
 import gr.york.mobiledev2026.ui.collection.CollectionsActivity;
@@ -30,8 +29,6 @@ public class BrowseArtistsActivity extends AppCompatActivity {
 
     private final Handler searchHandler = new Handler(Looper.getMainLooper());
     private BrowseBinding binding;
-    private ArtistService artistsService;
-
     private ArtistViewModel artistViewModel;
 
     @Override
@@ -42,7 +39,6 @@ public class BrowseArtistsActivity extends AppCompatActivity {
 
         artistViewModel = new ViewModelProvider(this).get(ArtistViewModel.class);
 
-        // UI Setup
         setupNavigation();
         setupSearchBar();
         setupRecyclerView();
@@ -98,7 +94,6 @@ public class BrowseArtistsActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         binding.recycleView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        // Moved spacing calculation here to prevent the crash
         final int spacing = (int) (16 * getResources().getDisplayMetrics().density);
 
         binding.recycleView.addItemDecoration(new RecyclerView.ItemDecoration() {

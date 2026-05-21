@@ -5,49 +5,48 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
+import gr.york.mobiledev2026.data.enumeration.Status;
+import gr.york.mobiledev2026.data.model.Resource;
 import gr.york.mobiledev2026.data.model.Track;
-import gr.york.mobiledev2026.data.service.TrackService;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
+import gr.york.mobiledev2026.data.repository.TrackRepository;
 
 public class TrackViewModel extends AndroidViewModel {
-    private final MutableLiveData<List<Track>> tracks = new MutableLiveData<>();
-    private final CompositeDisposable disposables = new CompositeDisposable();
-    private TrackService service;
+    private final MutableLiveData<String> searchQuery = new MutableLiveData<>();
+    private final LiveData<List<Track>> tracks;
+    private final TrackRepository repository;
 
     public TrackViewModel(Application app) {
         super(app);
-//        TODO
-//        this.service = RetrofitClient.getClient().create(TrackService.class);
-        fetchTracks();
+        this.repository = TrackRepository.getInstance();
+
+        tracks = Transformations.switchMap(searchQuery, query -> {
+            LiveData<Resource<List<Track>>> source;
+            if (query == null || query.isEmpty()) {
+                source = repository.getTracks();
+            } else {
+                source = repository.searchTracks(query);
+            }
+
+            return Transformations.map(source, resource -> {
+                if (resource != null && resource.status == Status.SUCCESS) {
+                    return resource.data;
+                }
+                return null;
+            });
+        });
+
+        search("");
     }
 
-    public LiveData<List<Track>> getTracksList() { return tracks; }
-
-    private void fetchTracks() {
-        disposables.add(
-            service.getTracks()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    response -> {
-                        if (response.isSuccess()) {
-                            tracks.setValue(response.getData());
-                        }
-                    }
-                )
-        );
+    public void search(String query) {
+        searchQuery.setValue(query);
     }
 
-    // 4. Clean up to prevent memory leaks
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        disposables.clear();
+    public LiveData<List<Track>> getTracksList() {
+        return tracks;
     }
 }

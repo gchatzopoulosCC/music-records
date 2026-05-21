@@ -67,7 +67,7 @@ public class CollectionListAdapter extends RecyclerView.Adapter<CollectionListAd
             title.setText(item.getName());
             Glide.with(itemView.getContext())
                 .load(item.getImagePath())
-                .placeholder(R.mipmap.ic_launcher) // Show this while loading
+                .placeholder(R.mipmap.ic_launcher)
                 .into(image);
 
             removeButton.setOnClickListener(v -> {

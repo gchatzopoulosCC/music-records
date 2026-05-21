@@ -37,8 +37,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:backgroundTint="?attr/colorPrimary"
-            android:tint="?attr/colorOnPrimary"
-            tools:srcCompat="@drawable/round_close_48" />
+            app:tint="?attr/colorOnPrimary"
+            app:srcCompat="@drawable/round_close_48" />
     </LinearLayout>
 
 </LinearLayout>

@@ -5,65 +5,67 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
+import gr.york.mobiledev2026.data.enumeration.Status;
 import gr.york.mobiledev2026.data.model.Artist;
-import gr.york.mobiledev2026.data.remote.ApiResponse;
-import gr.york.mobiledev2026.data.service.ArtistService;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import gr.york.mobiledev2026.data.model.Resource;
+import gr.york.mobiledev2026.data.model.Track;
+import gr.york.mobiledev2026.data.repository.ArtistRepository;
 
 public class ArtistViewModel extends AndroidViewModel {
-    private final MutableLiveData<List<Artist>> artists = new MutableLiveData<>();
-    private Disposable searchDisposable;
-    private ArtistService service;
+    private final MutableLiveData<String> searchQuery = new MutableLiveData<>();
+    private final LiveData<List<Artist>> artists;
+    private final ArtistRepository repository;
 
     public ArtistViewModel(Application app) {
         super(app);
-        // this.service = RetrofitClient.getClient().create(ArtistService.class);
+        this.repository = ArtistRepository.getInstance();
+
+        artists = Transformations.switchMap(searchQuery, query -> {
+            LiveData<Resource<List<Artist>>> source;
+            if (query == null || query.isEmpty()) {
+                source = repository.getArtists();
+            } else {
+                source = repository.searchArtists(query);
+            }
+
+            return Transformations.map(source, resource -> {
+                if (resource != null && resource.status == Status.SUCCESS) {
+                    return resource.data;
+                }
+                return null;
+            });
+        });
+
         search("");
     }
 
     public void search(String query) {
-        // Cancel previous search if user is typing fast
-        if (searchDisposable != null && !searchDisposable.isDisposed()) {
-            searchDisposable.dispose();
-        }
-
-        Observable<ApiResponse<List<Artist>>> observable;
-        if (query == null || query.isEmpty()) {
-            observable = service.getArtists();
-        } else {
-//            TODO
-            observable = service.searchArtists(query);
-        }
-
-        searchDisposable = observable
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                response -> {
-                    if (response.isSuccess()) {
-                        artists.setValue(response.getData());
-                    }
-                }
-            );
+        searchQuery.setValue(query);
     }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        if (searchDisposable != null) {
-            searchDisposable.dispose();
-        }
+    public LiveData<List<Artist>> getArtistsList() {
+        return artists;
     }
 
-    public LiveData<List<Artist>> getArtistsList() { return artists; }
+    public LiveData<Artist> getArtistByName(String name) {
+        return Transformations.map(repository.getArtistByName(name), resource -> {
+            if (resource != null && resource.status == Status.SUCCESS) {
+                return resource.data;
+            }
+            return null;
+        });
+    }
 
-    public Observable<ApiResponse<Artist>> getArtistByName(String name) {
-        return service.getArtistByName(name);
+    public LiveData<List<Track>> getArtistTopTracks(String artistName) {
+        return Transformations.map(repository.getTopTracksByArtist(artistName), resource -> {
+            if (resource != null && resource.status == Status.SUCCESS) {
+                return resource.data;
+            }
+            return null;
+        });
     }
 }
