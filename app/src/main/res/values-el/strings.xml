@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dev_name">Βασιλης</string>
+    <string name="home">Αρχική</string>
+    <string name="tracks">Κομμάτια</string>
+    <string name="collections">Συλλογές</string>
+    <string name="search">Αναζήτηση καλλιτεχνών</string>
+    <string name="save">Αποθήκευση στη Συλλογή</string>
+    <string name="saved">Αποθηκευμένα</string>
+    <string name="share">Κοινοποίηση</string>
+    <string name="biography">Βιογραφία</string>
+    <string name="top_tracks">Κορυφαία Κομμάτια</string>
+    <string name="similar_artists">Παρόμοιοι Καλλιτέχνες</string>
+    <string name="artist_picture">Εικόνα Καλλιτέχνη</string>
+    <string name="button_back">Κουμπί Επιστροφής</string>
+    <string name="listeners_format">%1$,d ακροατές</string>
+    <string name="duration_format">%1$d:%2$02d</string>
 </resources>
