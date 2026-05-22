@@ -24,7 +24,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://ws.audioscrobbler.com/2.0/";
+    private static final String BASE_URL = "https://ws.audioscrobbler.com/2.0/";
     private static Retrofit retrofit = null;
 
     static class LastFmDateAdapter {
@@ -76,6 +76,10 @@ public class RetrofitClient {
                 .build();
 
             Moshi moshi = new Moshi.Builder()
+                .add(new ApiResponseAdapterFactory.ImageUrlAdapter())
+                .add(new ApiResponseAdapterFactory.StatsAdapter())
+                .add(new ApiResponseAdapterFactory.TrackStatsAdapter())
+                .add(new ApiResponseAdapterFactory.ArtistListFallbackAdapter())
                 .add(new ApiResponseAdapterFactory.ArtistFallbackAdapter())
                 .add(new ApiResponseAdapterFactory.TagListFallbackAdapter())
                 .add(new ApiResponseAdapterFactory.TrackListFallbackAdapter())

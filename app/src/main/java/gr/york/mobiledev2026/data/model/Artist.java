@@ -1,14 +1,22 @@
 package gr.york.mobiledev2026.data.model;
 
+import com.squareup.moshi.Json;
+
 import java.util.List;
+
+import gr.york.mobiledev2026.data.remote.LastFmImageUrl;
 
 public class Artist {
     private String name;
     private String url;
+    @LastFmImageUrl
+    @Json(name = "image")
     private String imageUrl;
     private Stats stats;
+    @Json(name = "similar")
     private List<Artist> similarArtists;
     private List<Tag> tags;
+    @Json(name = "bio")
     private Description biography;
 
     public Artist(String name) {

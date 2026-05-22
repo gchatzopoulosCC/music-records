@@ -10,6 +10,7 @@ import com.squareup.moshi.Types;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 import gr.york.mobiledev2026.data.model.Artist;
+import gr.york.mobiledev2026.data.model.Stats;
 import gr.york.mobiledev2026.data.model.Tag;
 import gr.york.mobiledev2026.data.model.Track;
 
@@ -23,6 +24,201 @@ import java.util.Set;
 import java.util.List;
 
 public class ApiResponseAdapterFactory implements JsonAdapter.Factory {
+
+    /**
+     * Last.fm returns images as an array of {"#text": url, "size": ...} objects.
+     * This maps that array (or a plain string) to a single URL, preferring the largest (last non-empty).
+     */
+    public static class ImageUrlAdapter {
+        @FromJson
+        @LastFmImageUrl
+        public String fromJson(JsonReader reader) throws IOException {
+            JsonReader.Token token = reader.peek();
+            if (token == JsonReader.Token.STRING) {
+                return reader.nextString();
+            } else if (token == JsonReader.Token.NULL) {
+                return reader.nextNull();
+            } else if (token == JsonReader.Token.BEGIN_ARRAY) {
+                String best = null;
+                reader.beginArray();
+                while (reader.hasNext()) {
+                    reader.beginObject();
+                    String url = null;
+                    while (reader.hasNext()) {
+                        if (reader.nextName().equals("#text")) {
+                            if (reader.peek() == JsonReader.Token.NULL) {
+                                reader.nextNull();
+                            } else {
+                                url = reader.nextString();
+                            }
+                        } else {
+                            reader.skipValue();
+                        }
+                    }
+                    reader.endObject();
+                    if (url != null && !url.isEmpty()) {
+                        best = url;
+                    }
+                }
+                reader.endArray();
+                return best;
+            } else {
+                reader.skipValue();
+                return null;
+            }
+        }
+
+        @ToJson
+        public void toJson(JsonWriter writer, @LastFmImageUrl String value) throws IOException {
+            writer.value(value);
+        }
+    }
+
+    /**
+     * Last.fm returns listeners/playcount as JSON strings (e.g. "12345"), not numbers.
+     */
+    public static class StatsAdapter {
+        @FromJson
+        public Stats fromJson(JsonReader reader) throws IOException {
+            if (reader.peek() == JsonReader.Token.NULL) {
+                return reader.nextNull();
+            }
+            int listeners = 0;
+            int playcount = 0;
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("listeners")) {
+                    listeners = readInt(reader);
+                } else if (name.equals("playcount")) {
+                    playcount = readInt(reader);
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            return new Stats(listeners, playcount);
+        }
+
+        @ToJson
+        public void toJson(JsonWriter writer, Stats value) throws IOException {
+            writer.beginObject();
+            writer.name("listeners").value(value.getListeners());
+            writer.name("playcount").value(value.getPlaycount());
+            writer.endObject();
+        }
+
+        private int readInt(JsonReader reader) throws IOException {
+            JsonReader.Token token = reader.peek();
+            if (token == JsonReader.Token.STRING) {
+                try {
+                    return Integer.parseInt(reader.nextString().trim());
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
+            } else if (token == JsonReader.Token.NULL) {
+                reader.nextNull();
+                return 0;
+            }
+            return reader.nextInt();
+        }
+    }
+
+    /**
+     * Track endpoints (artist.gettoptracks / chart.gettoptracks) return listeners/playcount as
+     * top-level string fields rather than inside a "stats" object. This reads those siblings and
+     * folds them into the track's Stats, while delegating the rest of the parsing as normal.
+     */
+    public static class TrackStatsAdapter {
+        @FromJson
+        public Track fromJson(JsonReader reader, JsonAdapter<Track> delegate) throws IOException {
+            if (reader.peek() != JsonReader.Token.BEGIN_OBJECT) {
+                return delegate.fromJson(reader);
+            }
+
+            Integer listeners = null;
+            Integer playcount = null;
+
+            JsonReader peek = reader.peekJson();
+            peek.beginObject();
+            while (peek.hasNext()) {
+                String name = peek.nextName();
+                if (name.equals("listeners")) {
+                    listeners = readIntOrNull(peek);
+                } else if (name.equals("playcount")) {
+                    playcount = readIntOrNull(peek);
+                } else {
+                    peek.skipValue();
+                }
+            }
+            peek.close();
+
+            Track track = delegate.fromJson(reader);
+            if (track != null && track.getStats() == null && (listeners != null || playcount != null)) {
+                track.setStats(new Stats(listeners != null ? listeners : 0, playcount != null ? playcount : 0));
+            }
+            return track;
+        }
+
+        @ToJson
+        public void toJson(JsonWriter writer, Track value, JsonAdapter<Track> delegate) throws IOException {
+            delegate.toJson(writer, value);
+        }
+
+        private Integer readIntOrNull(JsonReader reader) throws IOException {
+            JsonReader.Token token = reader.peek();
+            if (token == JsonReader.Token.STRING) {
+                try {
+                    return Integer.parseInt(reader.nextString().trim());
+                } catch (NumberFormatException e) {
+                    return null;
+                }
+            } else if (token == JsonReader.Token.NUMBER) {
+                return reader.nextInt();
+            } else {
+                reader.skipValue();
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Handles a list of artists that may arrive either as a raw array (top-level chart results)
+     * or wrapped in {"artist": [...]} (the "similar" field on an artist).
+     */
+    public static class ArtistListFallbackAdapter {
+        @FromJson
+        public List<Artist> fromJson(JsonReader reader, JsonAdapter<List<Artist>> delegate) throws IOException {
+            JsonReader.Token token = reader.peek();
+            if (token == JsonReader.Token.BEGIN_OBJECT) {
+                reader.beginObject();
+                List<Artist> artists = null;
+                while (reader.hasNext()) {
+                    if (reader.nextName().equals("artist")) {
+                        if (reader.peek() == JsonReader.Token.BEGIN_ARRAY) {
+                            artists = delegate.fromJson(reader);
+                        } else {
+                            reader.skipValue();
+                        }
+                    } else {
+                        reader.skipValue();
+                    }
+                }
+                reader.endObject();
+                return artists;
+            } else if (token == JsonReader.Token.BEGIN_ARRAY) {
+                return delegate.fromJson(reader);
+            } else {
+                reader.skipValue();
+                return null;
+            }
+        }
+
+        @ToJson
+        public void toJson(JsonWriter writer, List<Artist> value, JsonAdapter<List<Artist>> delegate) throws IOException {
+            delegate.toJson(writer, value);
+        }
+    }
 
     public static class ArtistFallbackAdapter {
         @FromJson

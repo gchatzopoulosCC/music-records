@@ -1,11 +1,17 @@
 package gr.york.mobiledev2026.data.model;
 
+import com.squareup.moshi.Json;
+
 import java.util.List;
+
+import gr.york.mobiledev2026.data.remote.LastFmImageUrl;
 
 public class Track {
     int id;
     String name;
     String url;
+    @LastFmImageUrl
+    @Json(name = "image")
     String imageUrl;
     int duration;
     Stats stats;
