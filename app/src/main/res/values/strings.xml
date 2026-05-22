@@ -1,6 +1,18 @@
 <resources>
-    <string name="app_name" translatable="false">YorkMobileDev2026</string>
-    <string name="dev_name">Vassilis</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">MusicApp</string>
+    <string name="home">Home</string>
+    <string name="tracks">Tracks</string>
+    <string name="collections">Collections</string>
+    <string name="search">Search artists</string>
+    <string name="save">Save to Collection</string>
+    <string name="saved">Saved</string>
+    <string name="share">Share</string>
+    <string name="biography">Biography</string>
+    <string name="top_tracks">Top Tracks</string>
+    <string name="similar_artists">Similar Artists</string>
+    <string name="artist_picture">Picture of Artist</string>
+    <string name="button_back">Go Back Button</string>
+    <string name="listeners_format">%1$,d listeners</string>
+    <string name="duration_format">%1$d:%2$02d</string>
+    <string name="no_items">No items saved yet</string>
 </resources>

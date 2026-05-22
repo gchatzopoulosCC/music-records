@@ -1,0 +1,70 @@
+package gr.york.mobiledev2026.recycler;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import gr.york.mobiledev2026.R;
+import gr.york.mobiledev2026.data.model.Track;
+
+public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.TrackViewHolder> {
+
+    private List<Track> tracks;
+
+    public TrackListAdapter(List<Track> tracks) {
+        this.tracks = tracks;
+    }
+
+    public void updateData(List<Track> newTracks) {
+        this.tracks = newTracks;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.tracks_list_item, parent, false);
+        return new TrackViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
+        Track track = tracks.get(position);
+        holder.bind(track);
+    }
+
+    @Override
+    public int getItemCount() {
+        return tracks != null ? tracks.size() : 0;
+    }
+
+    public static class TrackViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView listeners;
+
+        TrackViewHolder(View itemView) {
+            super(itemView);
+            name = itemView.findViewById(R.id.trackItem);
+            listeners = itemView.findViewById(R.id.listeners);
+        }
+
+        void bind(Track item) {
+            name.setText(item.getName());
+            if (item.getStats() != null) {
+                listeners.setText(itemView.getContext().getString(R.string.listeners_format, item.getStats().getListeners()));
+            } else {
+                listeners.setText("");
+            }
+            int totalSeconds = item.getDuration();
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+        }
+    }
+}
