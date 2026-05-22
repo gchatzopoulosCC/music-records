@@ -61,6 +61,14 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionViewModel.getAllArtists().observe(this, list -> {
             if (list != null) {
                 adapter.updateData(list);
+
+                if (list.isEmpty()) {
+                    binding.recycleView.setVisibility(android.view.View.GONE);
+                    binding.emptyView.setVisibility(android.view.View.VISIBLE);
+                } else {
+                    binding.recycleView.setVisibility(android.view.View.VISIBLE);
+                    binding.emptyView.setVisibility(android.view.View.GONE);
+                }
             }
         });
     }

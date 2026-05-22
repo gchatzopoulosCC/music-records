@@ -14,4 +14,5 @@
     <string name="button_back">Go Back Button</string>
     <string name="listeners_format">%1$,d listeners</string>
     <string name="duration_format">%1$d:%2$02d</string>
+    <string name="no_items">No items saved yet</string>
 </resources>
