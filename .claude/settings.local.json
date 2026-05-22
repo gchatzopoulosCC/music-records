@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(Get-ChildItem -Path \"e:\\\\Users\\\\Burbudoll\\\\Downloads\\\\music-records - Copy324\" -Recurse -Force)",
-      "Bash(Select-Object FullName)"
-    ]
-  }
-}
